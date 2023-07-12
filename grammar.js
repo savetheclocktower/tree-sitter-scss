@@ -106,7 +106,21 @@ module.exports = grammar({
         /[\w_-][\w\d_-]*/
       ),
 
-    forward_statement: ($) => seq("@forward", $._value, ";"),
+    // TODO: Should `use_parameters` be aliased to `forward_parameters`?
+    // Inclined to say no because the semantics of `@forward` are identical to
+    // those of `@use`, so it feels like busywork for the consumer.
+    forward_statement: ($) =>
+      seq(
+        "@forward",
+        $._value,
+        optional(
+          seq('with', $.use_parameters)
+        ),
+        optional(
+          seq('as', $.use_namespace)
+        ),
+        ";"
+      ),
 
     apply_statement: ($) => seq("@apply", repeat($._value), ";"),
 

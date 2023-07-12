@@ -219,11 +219,28 @@ Forward statements
 ==============================
 
 @forward 'custom.css';
+@forward 'foo.css' as foo;
+@forward 'bar.css' as *;
+@forward "other" with ($a: configured);
+@forward "other" with ($a: configured, $b: 5,) as bar;
 
 ---
 
 (stylesheet
-  (forward_statement (string_value)))
+  (forward_statement (string_value))
+  (forward_statement (string_value) (use_namespace))
+  (forward_statement (string_value) (use_namespace))
+  (forward_statement
+    (string_value)
+    (use_parameters
+      (use_parameter (variable_name) (plain_value))))
+  (forward_statement
+    (string_value)
+    (use_parameters
+      (use_parameter (variable_name) (plain_value))
+      (use_parameter (variable_name) (integer_value)))
+    (use_namespace))
+  )
 
 ==============================
 Include statements
