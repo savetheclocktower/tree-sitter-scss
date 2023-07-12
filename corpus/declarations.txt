@@ -377,3 +377,19 @@ div {
       (declaration
         (property_name)
         (integer_value)))))
+
+====
+Maps
+====
+
+$map: (foo: "bar");
+
+---
+
+(stylesheet
+  (declaration
+    (variable_name)
+    (map_value
+      (key_value_pair key: (plain_value) value: (string_value))
+    )
+  ))

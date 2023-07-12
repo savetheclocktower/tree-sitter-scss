@@ -5,9 +5,17 @@ module.exports = grammar({
 
   externals: ($) => [$._descendant_operator],
 
-  conflicts: ($) => [[$._selector, $.declaration]],
+  conflicts: ($) => [
+    [$.parenthesized_value, $.map_value],
+    [$._selector, $.declaration],
+  ],
 
   inline: ($) => [$._top_level_item, $._block_item],
+
+  precedences: $ => [
+    ['map_value', 'parenthesized_value'],
+    ['map_value_pair', 'parenthesized_value']
+  ],
 
   rules: {
     stylesheet: ($) => repeat($._top_level_item),
@@ -73,19 +81,43 @@ module.exports = grammar({
 
     at_rule: ($) => seq($.at_keyword, sep(",", $._query), choice(";", $.block)),
 
-    use_statement: ($) => seq("@use", $._value, ";"),
+    use_statement: ($) => (
+      seq(
+        "@use",
+        $._value,
+        optional(
+          seq("with", $.keyword_parameters)
+        ),
+        optional(
+          seq("as", $.namespace)
+        ),
+        ";"
+      )
+    ),
+
+    namespace: ($) => choice("*", /[a-zA-Z_][a-zA-Z0-9_]*/),
 
     forward_statement: ($) => seq("@forward", $._value, ";"),
 
     apply_statement: ($) => seq("@apply", repeat($._value), ";"),
 
-    parameters: ($) => seq("(", sep1(",", $.parameter), ")"),
+    parameters: ($) => seq("(", sep1(",", $.parameter), optional(","), ")"),
 
     parameter: ($) =>
       seq(
         alias($.variable_identifier, $.variable_name),
         optional(seq(":", alias($._value, $.default_value)))
       ),
+
+    keyword_parameters: ($) => seq("(", sep1(",", $.keyword_parameter), optional(","), ")"),
+
+    keyword_parameter: ($) => (
+      seq(
+        alias($.variable_identifier, $.variable_name),
+        ':',
+        alias($._value, $.default_value)
+      )
+    ),
 
     mixin_statement: ($) =>
       seq("@mixin", alias($.identifier, $.name), optional($.parameters), $.block),
@@ -113,7 +145,7 @@ module.exports = grammar({
 
     placeholder: ($) => seq("%", alias($.identifier, $.name), $.block),
 
-    extend_statement: ($) => seq("@extend", choice($._value, $.class_selector), ";"),
+    extend_statement: ($) => seq("@extend", choice($._value, $.class_selector, $.placeholder_selector), ";"),
 
     if_statement: ($) => seq($.if_clause, repeat($.else_if_clause), optional($.else_clause)),
 
@@ -220,6 +252,9 @@ module.exports = grammar({
     class_selector: ($) =>
       prec(1, seq(optional($._selector), choice(".", $.nesting_selector), alias($.identifier, $.class_name))),
 
+    placeholder_selector: ($) =>
+      prec(1, seq(optional($._selector), "%", alias($.identifier, $.placeholder_name))),
+
     pseudo_class_selector: ($) =>
       seq(
         optional($._selector),
@@ -316,12 +351,57 @@ module.exports = grammar({
           $.float_value,
           $.string_value,
           $.binary_expression,
+          $.map_value,
           $.parenthesized_value,
           $.call_expression
         )
       ),
 
-    parenthesized_value: ($) => seq("(", $._value, ")"),
+    parenthesized_value: ($) => prec.dynamic(1,
+      seq("(", $._value, ")")
+    ),
+
+    map_value: ($) => prec.dynamic(2,
+      seq(
+        "(",
+        repeat(
+          $.key_value_pair
+        ),
+        $.final_key_value_pair,
+        ")"
+      )
+    ),
+
+    key_value_pair: ($) => prec(2,
+      seq(
+        $._value,
+        ':',
+        field('value', $._value),
+        ','
+      )
+    ),
+
+    final_key_value_pair: ($) => (
+      seq(
+        $._map_key,
+        ':',
+        field('value', $._value),
+        optional(',')
+      )
+    ),
+
+    _map_key: ($) => (
+      field('key',
+        choice(
+          $._plain_map_key,
+          $._value
+        )
+      )
+    ),
+
+    _plain_map_key: ($) => (
+      token(/[_a-zA-Z][_a-zA-Z0-9]*/)
+    ),
 
     color_value: ($) => seq("#", token.immediate(/[0-9a-fA-F]{3,8}/)),
 
@@ -361,6 +441,9 @@ module.exports = grammar({
       /((#\{[a-zA-Z0-9-_,&\$\.\(\) ]*\})|(--|-?[a-zA-Z_]))([a-zA-Z0-9-_]|(#\{[a-zA-Z0-9-_,&\$\.\(\) ]*\}))*/,
 
     variable_identifier: ($) => /([a-zA-Z_]+\.)?\$[a-zA-Z-_][a-zA-Z0-9-_]*/,
+
+    // Can't find exact character class here, so I'll assume alpha with underscores.
+    // namespace_identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
     at_keyword: ($) => /@[a-zA-Z-_]+/,
 
