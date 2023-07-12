@@ -250,6 +250,9 @@ Variables
 
 $font-stack: Helvetica, sans-serif;
 $primary-color: global red;
+$should-debug: true;
+$should-log: false;
+$empty: null;
 
 a {
   $primary-color: local red;
@@ -263,6 +266,9 @@ a {
 (stylesheet
   (declaration (variable_name) (plain_value) (plain_value))
   (declaration (variable_name) (scope_annotation) (plain_value))
+  (declaration (variable_name) (boolean_value))
+  (declaration (variable_name) (boolean_value))
+  (declaration (variable_name) (null_value))
   (rule_set
     (selectors (tag_name))
     (block
@@ -390,7 +396,7 @@ Placeholders
 
 (stylesheet
   (placeholder
-    (name)
+    (placeholder_selector (placeholder_name))
     (block
       (declaration (property_name) (integer_value (unit))))))
 

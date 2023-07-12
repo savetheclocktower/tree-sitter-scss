@@ -168,7 +168,19 @@ module.exports = grammar({
         alias($._value, $.argument_value)
       ),
 
-    placeholder: ($) => seq("%", alias($.identifier, $.name), $.block),
+    placeholder_declaration_selector: ($) => (
+      seq(
+        "%",
+        alias($.identifier, $.placeholder_name)
+      )
+    ),
+
+    placeholder: ($) => (
+      seq(
+        alias($.placeholder_declaration_selector, $.placeholder_selector),
+        $.block
+      )
+    ),
 
     extend_statement: ($) =>
       seq(
@@ -408,6 +420,8 @@ module.exports = grammar({
         choice(
           alias($.identifier, $.plain_value),
           alias($.variable_identifier, $.variable_value),
+          $.boolean_value,
+          $.null_value,
           $.plain_value,
           $.color_value,
           $.integer_value,
@@ -428,6 +442,8 @@ module.exports = grammar({
       choice(
         alias($.identifier, $.plain_value),
         alias($.variable_identifier, $.variable_value),
+        $.boolean_value,
+        $.null_value,
         alias($.unquoted_string_value, $.plain_value),
         $.color_value,
         $.integer_value,
@@ -438,6 +454,9 @@ module.exports = grammar({
         $.parenthesized_value,
         $.call_expression
       ),
+
+    boolean_value: ($) => choice("true", "false"),
+    null_value: ($) => "null",
 
     parenthesized_value: ($) => seq("(", $._value, ")"),
 

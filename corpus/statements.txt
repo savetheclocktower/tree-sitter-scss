@@ -360,7 +360,7 @@ If statements
     (name)
     (parameters
       (parameter (variable_name))
-      (parameter (variable_name) (default_value (plain_value))))
+      (parameter (variable_name) (default_value (boolean_value))))
     (block
       (declaration (property_name) (variable_value))
       (declaration (property_name) (variable_value))
@@ -388,7 +388,7 @@ Else statements
   (mixin_statement
     (name)
     (parameters
-      (parameter (variable_name) (default_value (plain_value))))
+      (parameter (variable_name) (default_value (boolean_value))))
     (block
       (if_statement
         (if_clause

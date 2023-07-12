@@ -75,6 +75,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -92,6 +96,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -145,6 +153,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -162,6 +174,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -208,6 +224,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -245,6 +265,10 @@
         },
         {
           "type": "nesting_selector",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -303,6 +327,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -320,6 +348,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -409,6 +441,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -446,6 +482,10 @@
         },
         {
           "type": "nesting_selector",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -500,6 +540,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -517,6 +561,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -673,6 +721,11 @@
     }
   },
   {
+    "type": "boolean_value",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "call_expression",
     "named": true,
     "fields": {
@@ -711,6 +764,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -728,6 +785,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -897,6 +958,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -914,6 +979,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -948,6 +1017,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -965,6 +1038,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -999,6 +1076,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -1024,6 +1105,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -1070,6 +1155,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -1087,6 +1176,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -1188,6 +1281,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -1209,6 +1306,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -1281,6 +1382,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -1298,6 +1403,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -1332,6 +1441,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -1353,6 +1466,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -1391,6 +1508,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -1412,6 +1533,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -1488,6 +1613,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -1505,6 +1634,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -1547,6 +1680,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -1564,6 +1701,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -1734,6 +1875,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -1759,6 +1904,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -1908,6 +2057,10 @@
             "named": true
           },
           {
+            "type": "boolean_value",
+            "named": true
+          },
+          {
             "type": "call_expression",
             "named": true
           },
@@ -1925,6 +2078,10 @@
           },
           {
             "type": "map_value",
+            "named": true
+          },
+          {
+            "type": "null_value",
             "named": true
           },
           {
@@ -1954,6 +2111,10 @@
             "named": true
           },
           {
+            "type": "boolean_value",
+            "named": true
+          },
+          {
             "type": "call_expression",
             "named": true
           },
@@ -1971,6 +2132,10 @@
           },
           {
             "type": "map_value",
+            "named": true
+          },
+          {
+            "type": "null_value",
             "named": true
           },
           {
@@ -2175,6 +2340,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -2192,6 +2361,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -2226,7 +2399,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "placeholder_selector",
           "named": true
         }
       ]
@@ -2394,6 +2567,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -2411,6 +2588,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -2800,6 +2981,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -2817,6 +3002,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -2896,6 +3085,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -2913,6 +3106,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -2966,6 +3163,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -2983,6 +3184,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -3025,6 +3230,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -3042,6 +3251,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -3080,6 +3293,10 @@
           "named": true
         },
         {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
           "type": "call_expression",
           "named": true
         },
@@ -3097,6 +3314,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
           "named": true
         },
         {
@@ -3343,6 +3564,10 @@
     "named": true
   },
   {
+    "type": "false",
+    "named": false
+  },
+  {
     "type": "feature_name",
     "named": true
   },
@@ -3411,6 +3636,10 @@
     "named": false
   },
   {
+    "type": "null_value",
+    "named": true
+  },
+  {
     "type": "only",
     "named": false
   },
@@ -3453,6 +3682,10 @@
   {
     "type": "to",
     "named": true
+  },
+  {
+    "type": "true",
+    "named": false
   },
   {
     "type": "unit",
