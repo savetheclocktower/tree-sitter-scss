@@ -757,6 +757,10 @@
             {
               "type": "SYMBOL",
               "name": "class_selector"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "placeholder_selector"
             }
           ]
         },
@@ -1332,6 +1336,40 @@
     "universal_selector": {
       "type": "STRING",
       "value": "*"
+    },
+    "placeholder_selector": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_selector"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "STRING",
+            "value": "%"
+          },
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            "named": true,
+            "value": "placeholder_name"
+          }
+        ]
+      }
     },
     "class_selector": {
       "type": "PREC",
