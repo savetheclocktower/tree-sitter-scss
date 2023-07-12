@@ -1007,6 +1007,10 @@
           "named": true
         },
         {
+          "type": "default",
+          "named": true
+        },
+        {
           "type": "float_value",
           "named": true
         },
@@ -1032,6 +1036,10 @@
         },
         {
           "type": "property_name",
+          "named": true
+        },
+        {
+          "type": "scope_annotation",
           "named": true
         },
         {
@@ -2436,6 +2444,11 @@
     }
   },
   {
+    "type": "scope_annotation",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "selector_query",
     "named": true,
     "fields": {},
@@ -3318,6 +3331,10 @@
     "named": true
   },
   {
+    "type": "default",
+    "named": true
+  },
+  {
     "type": "feature_name",
     "named": true
   },
@@ -3328,6 +3345,10 @@
   {
     "type": "function_name",
     "named": true
+  },
+  {
+    "type": "global",
+    "named": false
   },
   {
     "type": "id_name",
@@ -3360,6 +3381,10 @@
   {
     "type": "keyword_query",
     "named": true
+  },
+  {
+    "type": "local",
+    "named": false
   },
   {
     "type": "name",

@@ -249,6 +249,33 @@ Variables
 =================================
 
 $font-stack: Helvetica, sans-serif;
+$primary-color: global red;
+
+a {
+  $primary-color: local red;
+
+  color: $primary-color;
+  font: 100% $font-stack;
+}
+
+---
+
+(stylesheet
+  (declaration (variable_name) (plain_value) (plain_value))
+  (declaration (variable_name) (scope_annotation) (plain_value))
+  (rule_set
+    (selectors (tag_name))
+    (block
+      (declaration (variable_name) (scope_annotation) (plain_value))
+      (declaration (property_name) (variable_value))
+      (declaration (property_name) (integer_value (unit)) (variable_value)))))
+
+============================
+Variables with !default
+============================
+
+$font-stack: Helvetica, sans-serif !default;
+$map: (1: 2, 3: 4) !default;
 
 a {
   $primary-color: red;
@@ -260,13 +287,26 @@ a {
 ---
 
 (stylesheet
-  (declaration (variable_name) (plain_value) (plain_value))
+  (declaration (variable_name) (plain_value) (plain_value) (default))
+  (declaration
+    (variable_name)
+    (map_value
+      (map_pair
+        key: (integer_value)
+        value: (integer_value))
+      (map_pair
+        key: (integer_value)
+        value: (integer_value))
+    )
+    (default)
+  )
   (rule_set
     (selectors (tag_name))
     (block
       (declaration (variable_name) (plain_value))
       (declaration (property_name) (variable_value))
-      (declaration (property_name) (integer_value (unit)) (variable_value)))))
+      (declaration (property_name) (integer_value (unit)) (variable_value))
+      )))
 
 =================================
 Mixins with no arguments

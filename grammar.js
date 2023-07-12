@@ -322,16 +322,32 @@ module.exports = grammar({
 
     // Declarations
 
+    scope_annotation: ($) => choice("local", "global"),
+
     declaration: ($) =>
-      seq(
-        choice(alias($.variable_identifier, $.variable_name), alias($.identifier, $.property_name)),
-        ":",
-        $._value,
-        repeat(seq(optional(","), $._value)),
-        optional($.important),
-        ";"
+      choice(
+        // Variable
+        seq(
+          alias($.variable_identifier, $.variable_name),
+          ':',
+          optional($.scope_annotation),
+          $._value,
+          repeat(seq(optional(","), $._value)),
+          optional($.default),
+          ';'
+        ),
+        // Property
+        seq(
+          alias($.identifier, $.property_name),
+          ':',
+          $._value,
+          repeat(seq(optional(","), $._value)),
+          optional($.important),
+          ';'
+        )
       ),
 
+    // Only seems to be used to declare properties and not variables.
     last_declaration: ($) =>
       prec(
         1,
@@ -345,6 +361,7 @@ module.exports = grammar({
       ),
 
     important: ($) => "!important",
+    default: ($) => "!default",
 
     // Media queries
 
