@@ -73,7 +73,29 @@ module.exports = grammar({
 
     at_rule: ($) => seq($.at_keyword, sep(",", $._query), choice(";", $.block)),
 
-    use_statement: ($) => seq("@use", $._value, ";"),
+    use_statement: ($) =>
+      seq(
+        "@use",
+        $._value,
+        optional(
+          seq('with', $.use_parameters)
+        ),
+        optional(
+          seq('as', $.use_namespace)
+        ),
+        ";"
+      ),
+
+    use_namespace: ($) =>
+      choice("*",
+        // TODO: By experimentation, a `@use` namespace name can contain any
+        // word character, even if it's not ASCII. But expressing Unicode
+        // ranges in the regex seems to hang Tree-sitter.
+        //
+        // First character can be any word character, an underscore, or a
+        // hyphen. All other characters can be any of the above _or_ a digit.
+        /[\w_-][\w\d_-]*/
+      ),
 
     forward_statement: ($) => seq("@forward", $._value, ";"),
 
@@ -86,6 +108,18 @@ module.exports = grammar({
         alias($.variable_identifier, $.variable_name),
         optional(seq(":", alias($._value, $.default_value)))
       ),
+
+    use_parameters: ($) => seq("(", sep1(",", $.use_parameter), optional(","), ")"),
+
+    // A `@use` at-rule can take a configuration block. It's like an ordinary
+    // parameter, but it must specify a value after a colon.
+    use_parameter: ($) => (
+      seq(
+        alias($.variable_identifier, $.variable_name),
+        ':',
+        $._value
+      )
+    ),
 
     mixin_statement: ($) =>
       seq("@mixin", alias($.identifier, $.name), optional($.parameters), $.block),

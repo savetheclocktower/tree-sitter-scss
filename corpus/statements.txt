@@ -182,6 +182,10 @@ Use statements
 ==============================
 
 @use 'custom.css';
+@use 'foo.css' as foo;
+@use 'bar.css' as *;
+@use "other" with ($a: configured);
+@use "other" with ($a: configured, $b: 5,) as bar;
 
 .inverse {
   background-color: base.$primary-color;
@@ -192,6 +196,18 @@ Use statements
 
 (stylesheet
   (use_statement (string_value))
+  (use_statement (string_value) (use_namespace))
+  (use_statement (string_value) (use_namespace))
+  (use_statement
+    (string_value)
+    (use_parameters
+      (use_parameter (variable_name) (plain_value))))
+  (use_statement
+    (string_value)
+    (use_parameters
+      (use_parameter (variable_name) (plain_value))
+      (use_parameter (variable_name) (integer_value)))
+    (use_namespace))
   (rule_set
     (selectors (class_selector (class_name)))
     (block
