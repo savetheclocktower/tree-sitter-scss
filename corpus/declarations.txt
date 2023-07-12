@@ -159,17 +159,16 @@ a {
 URLs
 ============================
 
-a {
-  b: http://something-else?foo=bar;
-}
+$b: url(http://something-else?foo=bar);
 
 ---
 
 (stylesheet
-  (rule_set
-    (selectors (tag_name))
-    (block
-      (declaration (property_name) (plain_value)))))
+  (declaration
+    (variable_name)
+    (call_expression
+      name: (function_name)
+      arguments: (arguments (plain_value)))))
 
 ============================
 Important declarations
@@ -377,3 +376,59 @@ div {
       (declaration
         (property_name)
         (integer_value)))))
+
+====
+Maps
+====
+
+$map: (foo: "bar");
+$map: ("foo": "bar");
+$knowledge-variants: (
+  "blue": $blue,
+  "green": $green,
+  "turquoise": $turquoise
+);
+$map: (1: 2, 3: 4);
+---
+
+(stylesheet
+  (declaration
+    (variable_name)
+    (map_value
+      (map_pair
+        key: (plain_value)
+        value: (string_value))
+    )
+  )
+  (declaration
+    (variable_name)
+    (map_value
+      (map_pair
+        key: (string_value)
+        value: (string_value))
+    )
+  )
+  (declaration
+    (variable_name)
+    (map_value
+      (map_pair
+        key: (string_value)
+        value: (variable_value))
+      (map_pair
+        key: (string_value)
+        value: (variable_value))
+      (map_pair
+        key: (string_value)
+        value: (variable_value))
+    )
+  )
+  (declaration
+    (variable_name)
+    (map_value
+      (map_pair
+        key: (integer_value)
+        value: (integer_value))
+      (map_pair
+        key: (integer_value)
+        value: (integer_value))
+    )))

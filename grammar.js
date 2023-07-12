@@ -5,7 +5,16 @@ module.exports = grammar({
 
   externals: ($) => [$._descendant_operator],
 
-  conflicts: ($) => [[$._selector, $.declaration]],
+  conflicts: ($) => [
+    [$.parenthesized_value, $.map_value],
+    [$._selector, $.declaration],
+    [$._selector, $._value],
+  ],
+
+  precedences: $ => [
+    ['map_value', 'parenthesized_value'],
+    ['map_pair', 'parenthesized_value']
+  ],
 
   inline: ($) => [$._top_level_item, $._block_item],
 
@@ -299,7 +308,17 @@ module.exports = grammar({
     adjacent_sibling_selector: ($) => prec.left(seq($._selector, "+", $._selector)),
 
     pseudo_class_arguments: ($) =>
-      seq(token.immediate("("), sep(",", choice($._selector, repeat1($._value))), ")"),
+      seq(
+        token.immediate("("),
+        sep(
+          ",",
+          choice(
+            prec.dynamic(1, $._selector),
+            repeat1($._value)
+          )
+        ),
+        ")"
+      ),
 
     // Declarations
 
@@ -364,17 +383,71 @@ module.exports = grammar({
           $.float_value,
           $.string_value,
           $.binary_expression,
+          $.map_value,
           $.parenthesized_value,
           $.call_expression
         )
       ),
 
+    // Since a `url` function allows a greater breadth of unquoted characters
+    // than would be allowed in any other context, we need a version of
+    // `_value` that is allowed to exist inside of `url`. Lots of these would
+    // be nonsensical, but they still compile.
+    _value_allowed_in_url_function: ($) =>
+      choice(
+        alias($.identifier, $.plain_value),
+        alias($.variable_identifier, $.variable_value),
+        alias($.unquoted_string_value, $.plain_value),
+        $.color_value,
+        $.integer_value,
+        $.float_value,
+        $.string_value,
+        alias($.binary_expression_allowed_in_url_function, $.binary_expression),
+        $.map_value,
+        $.parenthesized_value,
+        $.call_expression
+      ),
+
     parenthesized_value: ($) => seq("(", $._value, ")"),
+
+    map_value: ($) => seq("(", sep(',', $.map_pair), ")"),
+
+    map_pair: ($) => prec(2,
+      seq(
+        field('key', $._value),
+        ':',
+        field('value', $._value)
+      )
+    ),
 
     color_value: ($) => seq("#", token.immediate(/[0-9a-fA-F]{3,8}/)),
 
     string_value: ($) =>
       token(choice(seq("'", /([^'\n]|\\(.|\n))*/, "'"), seq('"', /([^"\n]|\\(.|\n))*/, '"'))),
+
+    // Only used in certain places where SCSS will tolerate an unquoted string
+    // that would normally be ambiguous, like a URL.
+    //
+    // Very similar to `plain_value`, but explicitly allows colons.
+    unquoted_string_value: ($) => (
+      token(
+        seq(
+          repeat(
+            choice(
+              /[-_]/,
+              /\/[^\*\s,;!{}()\[\]]/ // Slash not followed by a '*' (which would be a comment)
+            )
+          ),
+          /[a-zA-Z]/,
+          repeat(
+            choice(
+              /[^/\s,;!{}()\[\]]/, // Not a slash, not a delimiter character
+              /\/[^\*\s,;!{}()\[\]]/ // Slash not followed by a '*' (which would be a comment)
+            )
+          )
+        )
+      )
+    ),
 
     integer_value: ($) => seq(token(seq(optional(choice("+", "-")), /\d+/)), optional($.unit)),
 
@@ -396,14 +469,46 @@ module.exports = grammar({
 
     unit: ($) => token.immediate(/[a-zA-Z%]+/),
 
-    call_expression: ($) => seq(alias($.identifier, $.function_name), $.arguments),
+    call_expression: ($) => (
+      choice(
+        seq(
+          field('name', alias('url', $.function_name)),
+          field('arguments', alias($.arguments_for_url, $.arguments)),
+        ),
+        seq(
+          field('name', alias($.identifier, $.function_name)),
+          field('arguments', $.arguments)
+        )
+      )
+    ),
 
     binary_expression: ($) =>
       prec.left(
-        seq($._value, choice("+", "-", "*", "/", "==", "<", ">", "!=", "<=", ">="), $._value)
+        seq(
+          $._value,
+          choice("+", "-", "*", "/", "==", "<", ">", "!=", "<=", ">="),
+          $._value
+        )
+      ),
+
+    binary_expression_allowed_in_url_function: ($) =>
+      prec.left(
+        seq(
+          $._value_allowed_in_url_function,
+          choice("+", "-", "*", "/", "==", "<", ">", "!=", "<=", ">="),
+          $._value_allowed_in_url_function
+        )
       ),
 
     arguments: ($) => seq(token.immediate("("), sep(choice(",", ";"), repeat1($._value)), ")"),
+
+    arguments_for_url: ($) => (
+      seq(
+        token.immediate("("),
+        sep(choice(",", ";"), repeat1($._value_allowed_in_url_function)),
+        ")"
+      )
+    ),
 
     identifier: ($) =>
       /((#\{[a-zA-Z0-9-_,&\$\.\(\) ]*\})|(--|-?[a-zA-Z_]))([a-zA-Z0-9-_]|(#\{[a-zA-Z0-9-_,&\$\.\(\) ]*\}))*/,
@@ -422,14 +527,14 @@ module.exports = grammar({
           repeat(
             choice(
               /[-_]/,
-              /\/[^\*\s,;!{}()\[\]]/ // Slash not followed by a '*' (which would be a comment)
+              /\/[^\*\s,:;!{}()\[\]]/ // Slash not followed by a '*' (which would be a comment)
             )
           ),
           /[a-zA-Z]/,
           repeat(
             choice(
-              /[^/\s,;!{}()\[\]]/, // Not a slash, not a delimiter character
-              /\/[^\*\s,;!{}()\[\]]/ // Slash not followed by a '*' (which would be a comment)
+              /[^/\s,:;!{}()\[\]]/, // Not a slash, not a delimiter character
+              /\/[^\*\s,:;!{}()\[\]]/ // Slash not followed by a '*' (which would be a comment)
             )
           )
         )
