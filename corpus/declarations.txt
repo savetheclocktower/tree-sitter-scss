@@ -271,6 +271,7 @@ a {
 
   color: $primary-color;
   font: 100% $font-stack;
+  display: other.$wat;
 }
 
 ---
@@ -286,7 +287,9 @@ a {
     (block
       (declaration (variable_name) (scope_annotation) (plain_value))
       (declaration (property_name) (variable_value))
-      (declaration (property_name) (integer_value (unit)) (variable_value)))))
+      (declaration (property_name) (integer_value (unit)) (variable_value))
+      (declaration (property_name) (variable_module (module) (variable_value)))
+    )))
 
 ============================
 Variables with !default
@@ -444,7 +447,7 @@ $map: ("foo": "bar");
 $knowledge-variants: (
   "blue": $blue,
   "green": $green,
-  "turquoise": $turquoise
+  "turquoise": bar.$turquoise
 );
 $map: (1: 2, 3: 4);
 ---
@@ -477,7 +480,7 @@ $map: (1: 2, 3: 4);
         value: (variable_value))
       (map_pair
         key: (string_value)
-        value: (variable_value))
+        value: (variable_module module: (module) value: (variable_value)))
     )
   )
   (declaration

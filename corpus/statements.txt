@@ -211,7 +211,7 @@ Use statements
   (rule_set
     (selectors (class_selector (class_name)))
     (block
-      (declaration (property_name) (variable_value))
+      (declaration (property_name) (variable_module (module) (variable_value)))
       (declaration (property_name) (plain_value)))))
 
 ==============================

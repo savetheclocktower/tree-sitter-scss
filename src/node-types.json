@@ -115,6 +115,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -190,6 +194,10 @@
         },
         {
           "type": "string_value",
+          "named": true
+        },
+        {
+          "type": "variable_module",
           "named": true
         },
         {
@@ -304,6 +312,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -364,6 +376,10 @@
         },
         {
           "type": "string_value",
+          "named": true
+        },
+        {
+          "type": "variable_module",
           "named": true
         },
         {
@@ -521,6 +537,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -577,6 +597,10 @@
         },
         {
           "type": "string_value",
+          "named": true
+        },
+        {
+          "type": "variable_module",
           "named": true
         },
         {
@@ -814,6 +838,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -1008,6 +1036,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -1064,6 +1096,10 @@
         },
         {
           "type": "string_value",
+          "named": true
+        },
+        {
+          "type": "variable_module",
           "named": true
         },
         {
@@ -1142,6 +1178,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_name",
           "named": true
         },
@@ -1202,6 +1242,10 @@
         },
         {
           "type": "string_value",
+          "named": true
+        },
+        {
+          "type": "variable_module",
           "named": true
         },
         {
@@ -1339,6 +1383,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -1432,6 +1480,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -1499,6 +1551,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -1559,6 +1615,10 @@
         },
         {
           "type": "string_value",
+          "named": true
+        },
+        {
+          "type": "variable_module",
           "named": true
         },
         {
@@ -1671,6 +1731,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -1727,6 +1791,10 @@
         },
         {
           "type": "string_value",
+          "named": true
+        },
+        {
+          "type": "variable_module",
           "named": true
         },
         {
@@ -1945,6 +2013,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -2107,6 +2179,10 @@
             "named": true
           },
           {
+            "type": "variable_module",
+            "named": true
+          },
+          {
             "type": "variable_value",
             "named": true
           }
@@ -2158,6 +2234,10 @@
           },
           {
             "type": "string_value",
+            "named": true
+          },
+          {
+            "type": "variable_module",
             "named": true
           },
           {
@@ -2390,6 +2470,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -2614,6 +2698,10 @@
         },
         {
           "type": "string_value",
+          "named": true
+        },
+        {
+          "type": "variable_module",
           "named": true
         },
         {
@@ -3031,6 +3119,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
@@ -3135,6 +3227,10 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_name",
           "named": true
         },
@@ -3221,10 +3317,40 @@
           "named": true
         },
         {
+          "type": "variable_module",
+          "named": true
+        },
+        {
           "type": "variable_value",
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "variable_module",
+    "named": true,
+    "fields": {
+      "module": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "module",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "variable_value",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -3277,6 +3403,10 @@
         },
         {
           "type": "string_value",
+          "named": true
+        },
+        {
+          "type": "variable_module",
           "named": true
         },
         {
@@ -3340,6 +3470,10 @@
         },
         {
           "type": "string_value",
+          "named": true
+        },
+        {
+          "type": "variable_module",
           "named": true
         },
         {

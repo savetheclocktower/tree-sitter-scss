@@ -417,6 +417,7 @@ module.exports = grammar({
         -1,
         choice(
           alias($.identifier, $.plain_value),
+          $.variable_module,
           alias($.variable_identifier, $.variable_value),
           $.boolean_value,
           $.null_value,
@@ -571,7 +572,20 @@ module.exports = grammar({
     identifier: ($) =>
       /((#\{[a-zA-Z0-9-_,&\$\.\(\) ]*\})|(--|-?[a-zA-Z_]))([a-zA-Z0-9-_]|(#\{[a-zA-Z0-9-_,&\$\.\(\) ]*\}))*/,
 
-    variable_identifier: ($) => /([a-zA-Z_]+\.)?\$[a-zA-Z-_][a-zA-Z0-9-_]*/,
+    variable_module: ($) => (
+      seq(
+        field('module', alias($.identifier, $.module)),
+        token.immediate('.'),
+        // SCSS doesn't tolerate whitespace on either side of the dot.
+        // The `token.immediate` enforces no whitespace on the left side,
+        // but we use an external to assert that no whitespace exists on
+        // the right side.
+        $._no_whitespace,
+        field('value', alias($.variable_identifier, $.variable_value))
+      )
+    ),
+
+    variable_identifier: ($) => /\$[a-zA-Z-_][a-zA-Z0-9-_]*/,
 
     at_keyword: ($) => /@[a-zA-Z-_]+/,
 
