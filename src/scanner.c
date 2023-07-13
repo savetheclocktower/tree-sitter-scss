@@ -3,6 +3,7 @@
 
 enum TokenType {
   DESCENDANT_OP,
+  NO_WHITESPACE
 };
 
 void *tree_sitter_scss_external_scanner_create() { return NULL; }
@@ -12,6 +13,11 @@ unsigned tree_sitter_scss_external_scanner_serialize(void *p, char *buffer) { re
 void tree_sitter_scss_external_scanner_deserialize(void *p, const char *b, unsigned n) {}
 
 bool tree_sitter_scss_external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid_symbols) {
+  if (!iswspace(lexer->lookahead) && valid_symbols[NO_WHITESPACE]) {
+    lexer->result_symbol = NO_WHITESPACE;
+    lexer->mark_end(lexer);
+    return true;
+  }
   if (iswspace(lexer->lookahead) && valid_symbols[DESCENDANT_OP]) {
     lexer->result_symbol = DESCENDANT_OP;
 

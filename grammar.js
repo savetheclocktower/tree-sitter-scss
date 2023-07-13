@@ -3,17 +3,15 @@ module.exports = grammar({
 
   extras: ($) => [/\s/, $.comment, $.single_line_comment],
 
-  externals: ($) => [$._descendant_operator],
+  externals: ($) => [
+    $._descendant_operator,
+    $._no_whitespace
+  ],
 
   conflicts: ($) => [
     [$.parenthesized_value, $.map_value],
     [$._selector, $.declaration],
     [$._selector, $._value],
-  ],
-
-  precedences: $ => [
-    ['map_value', 'parenthesized_value'],
-    ['map_pair', 'parenthesized_value']
   ],
 
   inline: ($) => [$._top_level_item, $._block_item],
@@ -90,16 +88,16 @@ module.exports = grammar({
           seq('with', $.use_parameters)
         ),
         optional(
-          seq('as', $.use_namespace)
+          seq('as', $.use_alias)
         ),
         ";"
       ),
 
-    use_namespace: ($) =>
+    use_alias: ($) =>
       choice("*",
-        // TODO: By experimentation, a `@use` namespace name can contain any
-        // word character, even if it's not ASCII. But expressing Unicode
-        // ranges in the regex seems to hang Tree-sitter.
+        // TODO: By experimentation, a `@use` alias can contain any word
+        // character, even if it's not ASCII. But expressing Unicode ranges in
+        // the regex seems to hang Tree-sitter.
         //
         // First character can be any word character, an underscore, or a
         // hyphen. All other characters can be any of the above _or_ a digit.
@@ -117,7 +115,7 @@ module.exports = grammar({
           seq('with', $.use_parameters)
         ),
         optional(
-          seq('as', $.use_namespace)
+          seq('as', $.use_alias)
         ),
         ";"
       ),
@@ -158,7 +156,7 @@ module.exports = grammar({
     include_arguments: ($) =>
       seq(
         token.immediate("("),
-        sep1(",", alias($.include_argument, $.argument)),
+        sep(",", alias($.include_argument, $.argument)),
         token.immediate(")")
       ),
 
@@ -477,8 +475,6 @@ module.exports = grammar({
 
     // Only used in certain places where SCSS will tolerate an unquoted string
     // that would normally be ambiguous, like a URL.
-    //
-    // Very similar to `plain_value`, but explicitly allows colons.
     unquoted_string_value: ($) => (
       token(
         seq(
@@ -521,11 +517,23 @@ module.exports = grammar({
 
     call_expression: ($) => (
       choice(
+        // Special case for a function named `url`.
         seq(
           field('name', alias('url', $.function_name)),
           field('arguments', alias($.arguments_for_url, $.arguments)),
         ),
         seq(
+          optional(
+            seq(
+              field('module', alias($.identifier, $.module)),
+              token.immediate('.'),
+              // SCSS doesn't tolerate whitespace on either side of the dot.
+              // The `token.immediate` enforces no whitespace on the left side,
+              // but we use an external to assert that no whitespace exists on
+              // the right side.
+              $._no_whitespace
+            )
+          ),
           field('name', alias($.identifier, $.function_name)),
           field('arguments', $.arguments)
         )
@@ -573,22 +581,9 @@ module.exports = grammar({
 
     plain_value: ($) =>
       token(
-        seq(
-          repeat(
-            choice(
-              /[-_]/,
-              /\/[^\*\s,:;!{}()\[\]]/ // Slash not followed by a '*' (which would be a comment)
-            )
-          ),
-          /[a-zA-Z]/,
-          repeat(
-            choice(
-              /[^/\s,:;!{}()\[\]]/, // Not a slash, not a delimiter character
-              /\/[^\*\s,:;!{}()\[\]]/ // Slash not followed by a '*' (which would be a comment)
-            )
-          )
-        )
-      ),
+        seq(repeat(/[-_]/), /[a-zA-Z]/, repeat(/[a-zA-Z0-9_-]/))
+      )
+
   },
 });
 

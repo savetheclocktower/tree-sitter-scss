@@ -739,6 +739,16 @@
           }
         ]
       },
+      "module": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "module",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -1653,7 +1663,7 @@
           "named": true
         },
         {
-          "type": "use_namespace",
+          "type": "use_alias",
           "named": true
         },
         {
@@ -3068,7 +3078,7 @@
     "fields": {}
   },
   {
-    "type": "use_namespace",
+    "type": "use_alias",
     "named": true,
     "fields": {}
   },
@@ -3203,7 +3213,7 @@
           "named": true
         },
         {
-          "type": "use_namespace",
+          "type": "use_alias",
           "named": true
         },
         {
@@ -3618,6 +3628,10 @@
   {
     "type": "local",
     "named": false
+  },
+  {
+    "type": "module",
+    "named": true
   },
   {
     "type": "name",

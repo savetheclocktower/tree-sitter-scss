@@ -4,6 +4,7 @@ Function calls
 
 a {
   color: rgba(0, 255, 0, 0.5);
+  width: math.div(500px, 4);
 }
 
 ---
@@ -14,11 +15,22 @@ a {
     (block
       (declaration
         (property_name)
-        (call_expression (function_name) (arguments
-          (integer_value)
-          (integer_value)
-          (integer_value)
-          (float_value)))))))
+        (call_expression
+          name: (function_name)
+          arguments: (arguments
+            (integer_value)
+            (integer_value)
+            (integer_value)
+            (float_value))))
+      (declaration
+        (property_name)
+        (call_expression
+          module: (module)
+          name: (function_name)
+          arguments: (arguments
+            (integer_value (unit))
+            (integer_value))))
+    )))
 
 =============================================
 Calls where each argument has multiple values

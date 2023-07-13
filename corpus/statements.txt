@@ -196,8 +196,8 @@ Use statements
 
 (stylesheet
   (use_statement (string_value))
-  (use_statement (string_value) (use_namespace))
-  (use_statement (string_value) (use_namespace))
+  (use_statement (string_value) (use_alias))
+  (use_statement (string_value) (use_alias))
   (use_statement
     (string_value)
     (use_parameters
@@ -207,7 +207,7 @@ Use statements
     (use_parameters
       (use_parameter (variable_name) (plain_value))
       (use_parameter (variable_name) (integer_value)))
-    (use_namespace))
+    (use_alias))
   (rule_set
     (selectors (class_selector (class_name)))
     (block
@@ -228,8 +228,8 @@ Forward statements
 
 (stylesheet
   (forward_statement (string_value))
-  (forward_statement (string_value) (use_namespace))
-  (forward_statement (string_value) (use_namespace))
+  (forward_statement (string_value) (use_alias))
+  (forward_statement (string_value) (use_alias))
   (forward_statement
     (string_value)
     (use_parameters
@@ -239,7 +239,7 @@ Forward statements
     (use_parameters
       (use_parameter (variable_name) (plain_value))
       (use_parameter (variable_name) (integer_value)))
-    (use_namespace))
+    (use_alias))
   )
 
 ==============================
