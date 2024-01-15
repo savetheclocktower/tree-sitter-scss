@@ -32,6 +32,10 @@
           "named": true
         },
         {
+          "type": "interpolation",
+          "named": true
+        },
+        {
           "type": "nesting_selector",
           "named": true
         },
@@ -96,6 +100,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -178,6 +186,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -268,11 +280,19 @@
           "named": true
         },
         {
+          "type": "interpolation",
+          "named": true
+        },
+        {
           "type": "map_value",
           "named": true
         },
         {
           "type": "nesting_selector",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -331,59 +351,11 @@
       "required": true,
       "types": [
         {
-          "type": "binary_expression",
-          "named": true
-        },
-        {
           "type": "block",
           "named": true
         },
         {
-          "type": "boolean_value",
-          "named": true
-        },
-        {
-          "type": "call_expression",
-          "named": true
-        },
-        {
-          "type": "color_value",
-          "named": true
-        },
-        {
-          "type": "float_value",
-          "named": true
-        },
-        {
-          "type": "integer_value",
-          "named": true
-        },
-        {
-          "type": "map_value",
-          "named": true
-        },
-        {
-          "type": "null_value",
-          "named": true
-        },
-        {
-          "type": "parenthesized_value",
-          "named": true
-        },
-        {
-          "type": "plain_value",
-          "named": true
-        },
-        {
-          "type": "string_value",
-          "named": true
-        },
-        {
-          "type": "variable_module",
-          "named": true
-        },
-        {
-          "type": "variable_value",
+          "type": "selectors",
           "named": true
         }
       ]
@@ -427,6 +399,21 @@
         },
         {
           "type": "unary_query",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "attribute_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
           "named": true
         }
       ]
@@ -493,11 +480,19 @@
           "named": true
         },
         {
+          "type": "interpolation",
+          "named": true
+        },
+        {
           "type": "map_value",
           "named": true
         },
         {
           "type": "nesting_selector",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -581,6 +576,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -822,6 +821,10 @@
           "named": true
         },
         {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
           "type": "null_value",
           "named": true
         },
@@ -881,6 +884,10 @@
           "named": true
         },
         {
+          "type": "interpolation",
+          "named": true
+        },
+        {
           "type": "nesting_selector",
           "named": true
         },
@@ -906,6 +913,21 @@
         },
         {
           "type": "universal_selector",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "class_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
           "named": true
         }
       ]
@@ -945,6 +967,10 @@
         },
         {
           "type": "id_selector",
+          "named": true
+        },
+        {
+          "type": "interpolation",
           "named": true
         },
         {
@@ -1020,6 +1046,10 @@
           "named": true
         },
         {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
           "type": "null_value",
           "named": true
         },
@@ -1080,6 +1110,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -1151,6 +1185,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -1229,6 +1267,10 @@
           "named": true
         },
         {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
           "type": "null_value",
           "named": true
         },
@@ -1285,6 +1327,10 @@
         },
         {
           "type": "id_selector",
+          "named": true
+        },
+        {
+          "type": "interpolation",
           "named": true
         },
         {
@@ -1360,6 +1406,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -1464,6 +1514,10 @@
           "named": true
         },
         {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
           "type": "null_value",
           "named": true
         },
@@ -1528,6 +1582,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -1599,6 +1657,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -1707,6 +1769,10 @@
           "named": true
         },
         {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
           "type": "null_value",
           "named": true
         },
@@ -1778,6 +1844,10 @@
           "named": true
         },
         {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
           "type": "null_value",
           "named": true
         },
@@ -1828,6 +1898,21 @@
     }
   },
   {
+    "type": "id_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "id_selector",
     "named": true,
     "fields": {},
@@ -1861,6 +1946,10 @@
         },
         {
           "type": "id_selector",
+          "named": true
+        },
+        {
+          "type": "interpolation",
           "named": true
         },
         {
@@ -1985,6 +2074,10 @@
           "named": true
         },
         {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
           "type": "null_value",
           "named": true
         },
@@ -2062,6 +2155,73 @@
     }
   },
   {
+    "type": "interpolation",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "boolean_value",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "color_value",
+          "named": true
+        },
+        {
+          "type": "float_value",
+          "named": true
+        },
+        {
+          "type": "integer_value",
+          "named": true
+        },
+        {
+          "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
+          "type": "null_value",
+          "named": true
+        },
+        {
+          "type": "parenthesized_value",
+          "named": true
+        },
+        {
+          "type": "plain_value",
+          "named": true
+        },
+        {
+          "type": "string_value",
+          "named": true
+        },
+        {
+          "type": "variable_module",
+          "named": true
+        },
+        {
+          "type": "variable_value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "keyframe_block",
     "named": true,
     "fields": {},
@@ -2097,7 +2257,26 @@
       "required": false,
       "types": [
         {
+          "type": "at_rule",
+          "named": true
+        },
+        {
           "type": "keyframe_block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "keyframes_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
           "named": true
         }
       ]
@@ -2106,10 +2285,21 @@
   {
     "type": "keyframes_statement",
     "named": true,
-    "fields": {},
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "keyframes_name",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "at_keyword",
@@ -2118,9 +2308,20 @@
         {
           "type": "keyframe_block_list",
           "named": true
-        },
+        }
+      ]
+    }
+  },
+  {
+    "type": "keyword_query",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
         {
-          "type": "keyframes_name",
+          "type": "interpolation",
           "named": true
         }
       ]
@@ -2160,6 +2361,10 @@
           },
           {
             "type": "map_value",
+            "named": true
+          },
+          {
+            "type": "nesting_value",
             "named": true
           },
           {
@@ -2218,6 +2423,10 @@
           },
           {
             "type": "map_value",
+            "named": true
+          },
+          {
+            "type": "nesting_value",
             "named": true
           },
           {
@@ -2454,6 +2663,10 @@
           "named": true
         },
         {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
           "type": "null_value",
           "named": true
         },
@@ -2500,6 +2713,21 @@
     }
   },
   {
+    "type": "placeholder_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "placeholder_selector",
     "named": true,
     "fields": {},
@@ -2509,6 +2737,36 @@
       "types": [
         {
           "type": "placeholder_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "plain_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "property_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
           "named": true
         }
       ]
@@ -2552,6 +2810,10 @@
         },
         {
           "type": "id_selector",
+          "named": true
+        },
+        {
+          "type": "interpolation",
           "named": true
         },
         {
@@ -2615,6 +2877,10 @@
         },
         {
           "type": "id_selector",
+          "named": true
+        },
+        {
+          "type": "interpolation",
           "named": true
         },
         {
@@ -2682,6 +2948,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -2768,6 +3038,10 @@
           "named": true
         },
         {
+          "type": "interpolation",
+          "named": true
+        },
+        {
           "type": "nesting_selector",
           "named": true
         },
@@ -2828,6 +3102,10 @@
         },
         {
           "type": "id_selector",
+          "named": true
+        },
+        {
+          "type": "interpolation",
           "named": true
         },
         {
@@ -2894,6 +3172,10 @@
           "named": true
         },
         {
+          "type": "interpolation",
+          "named": true
+        },
+        {
           "type": "nesting_selector",
           "named": true
         },
@@ -2919,6 +3201,21 @@
         },
         {
           "type": "universal_selector",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
           "named": true
         }
       ]
@@ -3067,6 +3364,21 @@
     }
   },
   {
+    "type": "tag_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "through",
     "named": true,
     "fields": {},
@@ -3100,6 +3412,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -3211,6 +3527,10 @@
           "named": true
         },
         {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
           "type": "null_value",
           "named": true
         },
@@ -3290,6 +3610,10 @@
         },
         {
           "type": "map_value",
+          "named": true
+        },
+        {
+          "type": "nesting_value",
           "named": true
         },
         {
@@ -3390,6 +3714,10 @@
           "named": true
         },
         {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
           "type": "null_value",
           "named": true
         },
@@ -3457,6 +3785,10 @@
           "named": true
         },
         {
+          "type": "nesting_value",
+          "named": true
+        },
+        {
           "type": "null_value",
           "named": true
         },
@@ -3488,7 +3820,15 @@
     "named": false
   },
   {
+    "type": "\"",
+    "named": false
+  },
+  {
     "type": "#",
+    "named": false
+  },
+  {
+    "type": "#{",
     "named": false
   },
   {
@@ -3497,6 +3837,10 @@
   },
   {
     "type": "%",
+    "named": false
+  },
+  {
+    "type": "'",
     "named": false
   },
   {
@@ -3692,14 +4036,6 @@
     "named": true
   },
   {
-    "type": "attribute_name",
-    "named": true
-  },
-  {
-    "type": "class_name",
-    "named": true
-  },
-  {
     "type": "comment",
     "named": true
   },
@@ -3728,10 +4064,6 @@
     "named": false
   },
   {
-    "type": "id_name",
-    "named": true
-  },
-  {
     "type": "identifier",
     "named": true
   },
@@ -3749,14 +4081,6 @@
   },
   {
     "type": "key",
-    "named": true
-  },
-  {
-    "type": "keyframes_name",
-    "named": true
-  },
-  {
-    "type": "keyword_query",
     "named": true
   },
   {
@@ -3780,6 +4104,10 @@
     "named": true
   },
   {
+    "type": "nesting_value",
+    "named": true
+  },
+  {
     "type": "not",
     "named": false
   },
@@ -3796,31 +4124,11 @@
     "named": false
   },
   {
-    "type": "placeholder_name",
-    "named": true
-  },
-  {
-    "type": "plain_value",
-    "named": true
-  },
-  {
-    "type": "property_name",
-    "named": true
-  },
-  {
     "type": "selector",
     "named": false
   },
   {
     "type": "single_line_comment",
-    "named": true
-  },
-  {
-    "type": "string_value",
-    "named": true
-  },
-  {
-    "type": "tag_name",
     "named": true
   },
   {

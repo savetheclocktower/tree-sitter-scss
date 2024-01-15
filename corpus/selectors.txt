@@ -42,6 +42,28 @@ div.class-b, .class-c.class-d {}
     (block)))
 
 =========================
+Class selectors (interpolation)
+=========================
+
+.#{"foo"}, .class-#{"bar"} {}
+div.class-#{$baz}, .class-#{$thud}.class-d {}
+
+---
+
+(stylesheet
+  (rule_set
+    (selectors
+      (class_selector (class_name (interpolation (string_value))))
+      (class_selector (class_name (interpolation (string_value)))))
+    (block))
+  (rule_set
+    (selectors
+      (class_selector (tag_name) (class_name (interpolation (variable_value))))
+      (class_selector (class_selector (class_name (interpolation (variable_value)))) (class_name)))
+    (block)))
+
+
+=========================
 Id selectors
 =========================
 
@@ -52,6 +74,21 @@ Id selectors
 (stylesheet
   (rule_set
     (selectors (id_selector (id_name)) (id_selector (tag_name) (id_name)))
+    (block)))
+
+=========================
+Id selectors (interpolation)
+=========================
+
+##{"some-id"}, a#another-#{"id"} {}
+
+---
+
+(stylesheet
+  (rule_set
+    (selectors
+      (id_selector (id_name (interpolation (string_value)))) (id_selector (tag_name) (id_name (interpolation (string_value))))
+    )
     (block)))
 
 =========================
@@ -70,6 +107,25 @@ a[b] {}
   (rule_set (selectors (attribute_selector (attribute_name) (plain_value))) (block))
   (rule_set (selectors (attribute_selector (attribute_name) (plain_value))) (block))
   (rule_set (selectors (attribute_selector (tag_name) (attribute_name))) (block)))
+
+=========================
+Attribute selectors (interpolation)
+=========================
+
+[#{$foo}] {}
+[#{$foo}=c] {}
+[d~=#{$foo}] {}
+a[#{$foo}=#{$bar}] {}
+[foo="bar-#{$baz}"] {}
+---
+
+(stylesheet
+  (rule_set (selectors (attribute_selector (attribute_name (interpolation (variable_value))))) (block))
+  (rule_set (selectors (attribute_selector (attribute_name (interpolation (variable_value))) (plain_value))) (block))
+  (rule_set (selectors (attribute_selector (attribute_name) (plain_value (interpolation (variable_value))))) (block))
+  (rule_set (selectors (attribute_selector (tag_name) (attribute_name (interpolation (variable_value))) (plain_value (interpolation (variable_value))))) (block))
+  (rule_set (selectors (attribute_selector (attribute_name) (string_value (interpolation (variable_value))))) (block))
+)
 
 =========================
 Pseudo-class selectors
@@ -148,6 +204,7 @@ a {
   & c {}
   & > d {}
   &e {}
+  &.#{"foo"} {}
 }
 
 ---
@@ -159,7 +216,9 @@ a {
       (rule_set (selectors (class_selector (nesting_selector) (class_name))) (block))
       (rule_set (selectors (descendant_selector (nesting_selector) (tag_name))) (block))
       (rule_set (selectors (child_selector (nesting_selector) (tag_name))) (block))
-      (rule_set (selectors (class_selector (nesting_selector) (class_name))) (block)))))
+      (rule_set (selectors (class_selector (nesting_selector) (class_name))) (block))
+      (rule_set (selectors (class_selector (nesting_selector) (class_name (interpolation (string_value))))) (block))
+)))
 
 ===========================
 Sibling selectors
@@ -222,3 +281,16 @@ html {
     (rule_set
       (selectors (descendant_selector (class_selector (class_name)) (nesting_selector)))
       (block)))))
+
+===========================
+Interpolated selector
+===========================
+
+#{$foo} {}
+
+---
+
+(stylesheet
+  (rule_set
+    (selectors (interpolation (variable_value)))
+    (block)))

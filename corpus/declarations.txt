@@ -378,7 +378,7 @@ Mixins with interpolations and content
   (mixin_statement
     (name)
     (parameters (parameter (variable_name)))
-    (block (media_statement (keyword_query) (block (at_rule (at_keyword)))))))
+    (block (media_statement (keyword_query (interpolation (variable_value))) (block (at_rule (at_keyword)))))))
 
 =================================
 Mixins with at-root
@@ -397,7 +397,14 @@ Mixins with at-root
     (name)
     (parameters (parameter (variable_name)))
     (block
-      (at_root_statement (plain_value) (block (at_rule (at_keyword)))))))
+      (at_root_statement
+        (selectors
+          (interpolation
+            (call_expression
+              (module)
+              (function_name)
+              (arguments (nesting_value) (variable_value)))))
+        (block (at_rule (at_keyword)))))))
 
 =================================
 Placeholders
@@ -407,13 +414,22 @@ Placeholders
   width: 100%;
 }
 
+%#{$foo} {
+  width: 100%;
+}
+
 ---
 
 (stylesheet
   (placeholder
     (placeholder_selector (placeholder_name))
     (block
-      (declaration (property_name) (integer_value (unit))))))
+      (declaration (property_name) (integer_value (unit)))))
+  (placeholder
+    (placeholder_selector (placeholder_name (interpolation (variable_value))))
+    (block
+      (declaration (property_name) (integer_value (unit)))))
+)
 
 =============================================
 Spaces after colons in property declarations
