@@ -509,3 +509,34 @@ $map: (1: 2, 3: 4);
         key: (integer_value)
         value: (integer_value))
     )))
+
+
+==============
+Grid values
+==============
+
+div {
+  grid-template: [linename] 100px / [columnname1] 30% [columnname2] 70%;
+}
+
+---
+
+(stylesheet
+  (rule_set
+    (selectors (tag_name))
+    (block
+      (declaration
+        (property_name)
+        (grid_value
+          (plain_value))
+        (binary_expression
+          (integer_value
+            (unit))
+          (grid_value
+            (plain_value)))
+        (integer_value
+          (unit))
+        (grid_value
+          (plain_value))
+        (integer_value
+          (unit))))))

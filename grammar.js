@@ -569,6 +569,7 @@ module.exports = grammar({
           $.integer_value,
           $.float_value,
           $.string_value,
+          $.grid_value,
           $.binary_expression,
           $.map_value,
           $.parenthesized_value,
@@ -696,6 +697,12 @@ module.exports = grammar({
 
     unit: ($) => token.immediate(/[a-zA-Z%]+/),
 
+    grid_value: ($) => seq(
+      '[',
+      sep1(',', $._value),
+      ']'
+    ),
+
     _expression: ($) =>
       choice(
         $.call_expression,
@@ -727,6 +734,11 @@ module.exports = grammar({
       prec.left(
         seq(
           $._value,
+          // NOTE: Technically, `/` should only be allowed in binary
+          // expressions if we're inside a `calc`. They're not a part of Dart
+          // Sass, but even tree-sitter-css still treats them as binary
+          // operators in places where they aren't (e.g., grid value syntax),
+          // so we'll leave this the way it is for now.
           choice("+", "-", "*", "/", "==", "<", ">", "!=", "<=", ">="),
           $._value
         )
