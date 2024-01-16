@@ -99,6 +99,7 @@ bool tree_sitter_scss_external_scanner_scan(void *payload, TSLexer *lexer, const
       lexer->lookahead == '.' ||
       lexer->lookahead == '[' ||
       lexer->lookahead == '-' ||
+      lexer->lookahead == '*' ||
       lexer->lookahead == '&' ||
       iswalnum(lexer->lookahead)
     ) {
