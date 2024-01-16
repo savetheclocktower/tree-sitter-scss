@@ -378,7 +378,17 @@ module.exports = grammar({
         optional($._selector),
         "::",
         $._no_whitespace,
-        alias($._identifier_with_interpolation, $.tag_name)
+        alias($._identifier_with_interpolation, $.tag_name),
+        optional(
+          alias($.pseudo_element_arguments, $.arguments)
+        )
+      ),
+
+    pseudo_element_arguments: ($) =>
+      seq(
+        token.immediate('('),
+        sep(',', choice($._selector, repeat1($._value))),
+        ')'
       ),
 
     id_selector: ($) =>

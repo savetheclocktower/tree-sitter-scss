@@ -157,6 +157,56 @@ a::first-line {}
     (selectors (pseudo_element_selector (tag_name) (tag_name)))
     (block)))
 
+
+=========================
+Pseudo-element selectors (interpolation)
+=========================
+
+a::first-#{"line"} {}
+a::#{"first-line"} {}
+
+---
+
+(stylesheet
+  (rule_set
+    (selectors (pseudo_element_selector (tag_name) (tag_name (interpolation (string_value)))))
+    (block))
+  (rule_set
+    (selectors (pseudo_element_selector (tag_name) (tag_name (interpolation (string_value)))))
+    (block))
+)
+
+
+=========================
+::slotted pseudo element
+=========================
+
+::slotted(button) {}
+
+---
+
+(stylesheet
+  (rule_set
+    (selectors (pseudo_element_selector (tag_name)
+      (arguments (tag_name))))
+    (block)))
+
+
+=========================
+::slotted pseudo element (interpolation)
+=========================
+
+::slotted(#{$button}) {}
+
+---
+
+(stylesheet
+  (rule_set
+    (selectors (pseudo_element_selector (tag_name)
+      (arguments (interpolation (variable_value)))))
+    (block)))
+
+
 =========================
 Child selectors
 =========================
@@ -199,7 +249,7 @@ f * {}
     (selectors
       (descendant_selector
         (tag_name)
-        (universal_selector)))      
+        (universal_selector)))
     (block)))
 
 ===========================
