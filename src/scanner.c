@@ -21,7 +21,9 @@ bool scan_for_string_segment(TSLexer *lexer, char delimiter, TokenType stringTok
   char c = lexer->lookahead;
   bool escaped = false;
   int initialColumn = lexer->get_column(lexer);
-  int lastEscape;
+  // The column of the most recent backslash character. (Assigned an initial
+  // value that can't possibly confuse us.)
+  int lastEscape = -2;
   int col;
 
   if (c == delimiter) {
@@ -34,8 +36,18 @@ bool scan_for_string_segment(TSLexer *lexer, char delimiter, TokenType stringTok
     }
     col = lexer->get_column(lexer);
     escaped = col == (lastEscape + 1);
+    // printf("Considering char: %c at column: %i and delimiter: %c and escaped: %i\n", c, col, delimiter, escaped);
     if (c == '\\') {
+      // Mark the position of this escape so that we know we'll be escaped the
+      // next time through the loop.
       lastEscape = col;
+    }
+
+    if (c == delimiter && !escaped) {
+      // printf("&&& Found matching delimiter at col: %i\n", lexer->get_column(lexer));
+      lexer->mark_end(lexer);
+      lexer->result_symbol = stringTokenType;
+      return true;
     }
 
     if (c == '#' && !escaped) {
@@ -51,12 +63,6 @@ bool scan_for_string_segment(TSLexer *lexer, char delimiter, TokenType stringTok
           return false;
         }
       }
-    }
-
-    if (c == delimiter && !escaped) {
-      lexer->mark_end(lexer);
-      lexer->result_symbol = stringTokenType;
-      return true;
     }
 
     if (c == '\n' && !escaped) {
@@ -83,6 +89,7 @@ bool tree_sitter_scss_external_scanner_scan(void *payload, TSLexer *lexer, const
   }
 
   if (valid_symbols[DOUBLE_QUOTED_STRING_SEGMENT] && !inErrorState) {
+    // printf("&&& Scanning for string at col: %i\n", lexer->get_column(lexer));
     return scan_for_string_segment(lexer, '"', DOUBLE_QUOTED_STRING_SEGMENT);
   }
 

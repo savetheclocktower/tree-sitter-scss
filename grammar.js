@@ -322,7 +322,7 @@ module.exports = grammar({
     _selector: ($) =>
       choice(
         $.universal_selector,
-        alias($._identifier, $.tag_name),
+        alias($._identifier_with_interpolation, $.tag_name),
         $.class_selector,
         $.nesting_selector,
         $.pseudo_class_selector,
@@ -334,6 +334,7 @@ module.exports = grammar({
         $.descendant_selector,
         $.sibling_selector,
         $.adjacent_sibling_selector,
+        $.namespace_selector,
         $.interpolation
       ),
 
@@ -404,7 +405,13 @@ module.exports = grammar({
         optional($._selector),
         "[",
         seq(
-          alias($._identifier_with_interpolation, $.attribute_name),
+          alias(
+            choice(
+              $._identifier_with_interpolation,
+              $.namespace_selector
+            ),
+            $.attribute_name
+          ),
           optional(
             seq(
               choice("=", "~=", "^=", "|=", "*=", "$="),
@@ -431,6 +438,14 @@ module.exports = grammar({
 
     adjacent_sibling_selector: ($) => prec.left(
       seq($._selector, "+", $._selector)
+    ),
+
+    namespace_selector: ($) => prec.left(
+      seq(
+        $._selector,
+        '|',
+        $._selector
+      )
     ),
 
     pseudo_class_arguments: ($) =>
