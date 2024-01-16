@@ -1698,7 +1698,12 @@
           ]
         },
         {
-          "type": "STRING",
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_pseudo_class_selector_colon"
+          },
+          "named": false,
           "value": ":"
         },
         {
@@ -3687,10 +3692,6 @@
     ],
     [
       "_selector",
-      "declaration"
-    ],
-    [
-      "_selector",
       "_value"
     ]
   ],
@@ -3699,6 +3700,10 @@
     {
       "type": "SYMBOL",
       "name": "_descendant_operator"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_pseudo_class_selector_colon"
     },
     {
       "type": "SYMBOL",

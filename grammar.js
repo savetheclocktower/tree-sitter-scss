@@ -5,6 +5,7 @@ module.exports = grammar({
 
   externals: ($) => [
     $._descendant_operator,
+    $._pseudo_class_selector_colon,
     // We use this token to enforce lack of whitespace in situations where we
     // can't use `token.immediate`.
     $._no_whitespace,
@@ -17,7 +18,6 @@ module.exports = grammar({
     [$.attribute_selector, $._identifier_with_interpolation],
     [$.parenthesized_value, $.map_value],
     [$._selector, $._identifier_with_interpolation],
-    [$._selector, $.declaration],
     [$._selector, $._value],
   ],
 
@@ -367,7 +367,7 @@ module.exports = grammar({
     pseudo_class_selector: ($) =>
       seq(
         optional($._selector),
-        ":",
+        alias($._pseudo_class_selector_colon, ':'),
         $._no_whitespace,
         alias($._identifier_with_interpolation, $.class_name),
         optional(alias($.pseudo_class_arguments, $.arguments))

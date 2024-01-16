@@ -4,6 +4,7 @@
 
 typedef enum TokenType {
   DESCENDANT_OP,
+  PSEUDO_CLASS_SELECTOR_COLON,
   NO_WHITESPACE,
   SINGLE_QUOTED_STRING_SEGMENT,
   DOUBLE_QUOTED_STRING_SEGMENT,
@@ -120,6 +121,20 @@ bool tree_sitter_scss_external_scanner_scan(void *payload, TSLexer *lexer, const
         }
         lexer->advance(lexer, false);
       }
+    }
+  }
+
+  if (valid_symbols[PSEUDO_CLASS_SELECTOR_COLON]) {
+    while (iswspace(lexer->lookahead)) {
+      lexer->advance(lexer, true);
+    }
+    if (lexer->lookahead == ':') {
+      lexer->advance(lexer, false);
+      if (iswspace(lexer->lookahead) || lexer->lookahead == ':') {
+        return false;
+      }
+      lexer->result_symbol = PSEUDO_CLASS_SELECTOR_COLON;
+      return true;
     }
   }
 
