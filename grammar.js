@@ -101,8 +101,8 @@ module.exports = grammar({
       $.block
     ),
 
-    from: ($) => "from",
-    to: ($) => "to",
+    from: (_) => "from",
+    to: (_) => "to",
 
     supports_statement: ($) => seq("@supports", $._query, $.block),
 
@@ -131,7 +131,7 @@ module.exports = grammar({
         ";"
       ),
 
-    use_alias: ($) =>
+    use_alias: (_) =>
       choice("*",
         // TODO: By experimentation, a `@use` alias can contain any word
         // character, even if it's not ASCII. But expressing Unicode ranges in
@@ -338,9 +338,9 @@ module.exports = grammar({
         $.interpolation
       ),
 
-    nesting_selector: ($) => "&",
+    nesting_selector: (_) => "&",
 
-    universal_selector: ($) => "*",
+    universal_selector: (_) => "*",
 
     placeholder_selector: ($) =>
       prec(
@@ -463,7 +463,7 @@ module.exports = grammar({
 
     // Declarations
 
-    scope_annotation: ($) => choice("local", "global"),
+    scope_annotation: (_) => choice("local", "global"),
 
     declaration: ($) =>
       choice(
@@ -504,8 +504,8 @@ module.exports = grammar({
         )
       ),
 
-    important: ($) => "!important",
-    default: ($) => "!default",
+    important: (_) => "!important",
+    default: (_) => "!default",
 
     // Media queries
 
@@ -599,8 +599,8 @@ module.exports = grammar({
         $.call_expression
       ),
 
-    boolean_value: ($) => choice("true", "false"),
-    null_value: ($) => "null",
+    boolean_value: (_) => choice("true", "false"),
+    null_value: (_) => "null",
 
     parenthesized_value: ($) => seq("(", $._value, ")"),
 
@@ -614,7 +614,7 @@ module.exports = grammar({
       )
     ),
 
-    color_value: ($) => seq("#", token.immediate(/[0-9a-fA-F]{3,8}/)),
+    color_value: (_) => seq("#", token.immediate(/[0-9a-fA-F]{3,8}/)),
 
     string_value: ($) =>
       choice(
@@ -648,7 +648,7 @@ module.exports = grammar({
 
     // Only used in certain places where SCSS will tolerate an unquoted string
     // that would normally be ambiguous, like a URL.
-    unquoted_string_value: ($) => (
+    unquoted_string_value: (_) => (
       token(
         seq(
           repeat(
@@ -695,7 +695,7 @@ module.exports = grammar({
         optional($.unit)
       ),
 
-    unit: ($) => token.immediate(/[a-zA-Z%]+/),
+    unit: (_) => token.immediate(/[a-zA-Z%]+/),
 
     grid_value: ($) => seq(
       '[',
@@ -774,7 +774,7 @@ module.exports = grammar({
       )
     ),
 
-    _identifier: ($) => /((--|-?[a-zA-Z_]))([a-zA-Z0-9-_])*/,
+    _identifier: (_) => /((--|-?[a-zA-Z_]))([a-zA-Z0-9-_])*/,
 
     variable_module: ($) => (
       seq(
@@ -785,13 +785,13 @@ module.exports = grammar({
       )
     ),
 
-    variable_identifier: ($) => /\$[a-zA-Z-_][a-zA-Z0-9-_]*/,
+    variable_identifier: (_) => /\$[a-zA-Z-_][a-zA-Z0-9-_]*/,
 
-    at_keyword: ($) => /@[a-zA-Z-_]+/,
+    at_keyword: (_) => /@[a-zA-Z-_]+/,
 
-    comment: ($) => token(seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/")),
+    comment: (_) => token(seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/")),
 
-    single_line_comment: ($) => token(seq("//", /.*/)),
+    single_line_comment: (_) => token(seq("//", /.*/)),
 
     interpolation: ($) =>
       seq(
@@ -820,7 +820,7 @@ module.exports = grammar({
         )
       ),
 
-    _plain_value: ($) =>
+    _plain_value: (_) =>
       token(
         seq(repeat(/[-_]/), /[a-zA-Z]/, repeat(/[a-zA-Z0-9_-]/))
       )
