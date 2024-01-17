@@ -1,4 +1,4 @@
-#include <tree_sitter/parser.h>
+#include "tree_sitter/parser.h"
 #include <wctype.h>
 #include <stdio.h>
 
@@ -102,22 +102,24 @@ bool scan_for_apply_value(TSLexer *lexer) {
 }
 
 bool tree_sitter_scss_external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid_symbols) {
-  bool inErrorState = valid_symbols[ERROR_SENTINEL];
+  if (valid_symbols[ERROR_SENTINEL]) return false;
+
+  // bool inErrorState = valid_symbols[ERROR_SENTINEL];
   if (!iswspace(lexer->lookahead) && valid_symbols[NO_WHITESPACE]) {
     lexer->result_symbol = NO_WHITESPACE;
     lexer->mark_end(lexer);
     return true;
   }
 
-  if (valid_symbols[SINGLE_QUOTED_STRING_SEGMENT] && !inErrorState) {
+  if (valid_symbols[SINGLE_QUOTED_STRING_SEGMENT]) {
     return scan_for_string_segment(lexer, '\'', SINGLE_QUOTED_STRING_SEGMENT);
   }
 
-  if (valid_symbols[DOUBLE_QUOTED_STRING_SEGMENT] && !inErrorState) {
+  if (valid_symbols[DOUBLE_QUOTED_STRING_SEGMENT]) {
     return scan_for_string_segment(lexer, '"', DOUBLE_QUOTED_STRING_SEGMENT);
   }
 
-  if (valid_symbols[APPLY_VALUE] && !inErrorState) {
+  if (valid_symbols[APPLY_VALUE]) {
     return scan_for_apply_value(lexer);
   }
 
