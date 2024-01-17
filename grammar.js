@@ -11,6 +11,7 @@ module.exports = grammar({
     $._no_whitespace,
     $._single_quoted_string_segment,
     $._double_quoted_string_segment,
+    $._apply_value,
     $._error_sentinel
   ],
 
@@ -38,7 +39,6 @@ module.exports = grammar({
         $.supports_statement,
         $.use_statement,
         $.forward_statement,
-        $.apply_statement,
         $.mixin_statement,
         $.include_statement,
         $.if_statement,
@@ -106,6 +106,18 @@ module.exports = grammar({
 
     supports_statement: ($) => seq("@supports", $._query, $.block),
 
+    postcss_statement: ($) => prec(
+      -1,
+      seq(
+        $.at_keyword,
+        repeat(
+          alias($._apply_value, $.plain_value)
+        ),
+        optional($.important),
+        ';'
+      )
+    ),
+
     at_rule: ($) => seq(
       $.at_keyword,
       sep(",", $._query),
@@ -157,8 +169,6 @@ module.exports = grammar({
         ),
         ";"
       ),
-
-    apply_statement: ($) => seq("@apply", repeat($._value), ";"),
 
     parameters: ($) => seq("(", sep1(",", $.parameter), ")"),
 
@@ -300,6 +310,7 @@ module.exports = grammar({
         $.namespace_statement,
         $.keyframes_statement,
         $.supports_statement,
+        $.postcss_statement,
         $.mixin_statement,
         $.include_statement,
         $.extend_statement,
@@ -519,14 +530,16 @@ module.exports = grammar({
         $.parenthesized_query
       ),
 
-    feature_query: ($) =>
+    feature_query: ($) => prec(
+      -1,
       seq(
         "(",
         alias($._identifier, $.feature_name),
         ":",
         repeat1($._value),
         ")"
-      ),
+      )
+    ),
 
     parenthesized_query: ($) => seq("(", $._query, ")"),
 

@@ -71,77 +71,6 @@
     }
   },
   {
-    "type": "apply_statement",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "binary_expression",
-          "named": true
-        },
-        {
-          "type": "boolean_value",
-          "named": true
-        },
-        {
-          "type": "call_expression",
-          "named": true
-        },
-        {
-          "type": "color_value",
-          "named": true
-        },
-        {
-          "type": "float_value",
-          "named": true
-        },
-        {
-          "type": "grid_value",
-          "named": true
-        },
-        {
-          "type": "integer_value",
-          "named": true
-        },
-        {
-          "type": "map_value",
-          "named": true
-        },
-        {
-          "type": "nesting_value",
-          "named": true
-        },
-        {
-          "type": "null_value",
-          "named": true
-        },
-        {
-          "type": "parenthesized_value",
-          "named": true
-        },
-        {
-          "type": "plain_value",
-          "named": true
-        },
-        {
-          "type": "string_value",
-          "named": true
-        },
-        {
-          "type": "variable_module",
-          "named": true
-        },
-        {
-          "type": "variable_value",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "argument",
     "named": true,
     "fields": {},
@@ -806,6 +735,10 @@
         },
         {
           "type": "namespace_statement",
+          "named": true
+        },
+        {
+          "type": "postcss_statement",
           "named": true
         },
         {
@@ -3068,6 +3001,29 @@
     }
   },
   {
+    "type": "postcss_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "at_keyword",
+          "named": true
+        },
+        {
+          "type": "important",
+          "named": true
+        },
+        {
+          "type": "plain_value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "property_name",
     "named": true,
     "fields": {},
@@ -3567,10 +3523,6 @@
       "multiple": true,
       "required": false,
       "types": [
-        {
-          "type": "apply_statement",
-          "named": true
-        },
         {
           "type": "at_rule",
           "named": true
@@ -4271,10 +4223,6 @@
   },
   {
     "type": ">=",
-    "named": false
-  },
-  {
-    "type": "@apply",
     "named": false
   },
   {

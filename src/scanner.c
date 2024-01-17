@@ -8,6 +8,7 @@ typedef enum TokenType {
   NO_WHITESPACE,
   SINGLE_QUOTED_STRING_SEGMENT,
   DOUBLE_QUOTED_STRING_SEGMENT,
+  APPLY_VALUE,
   ERROR_SENTINEL
 } TokenType;
 
@@ -76,6 +77,30 @@ bool scan_for_string_segment(TSLexer *lexer, char delimiter, TokenType stringTok
   return false;
 }
 
+// @apply values (of PostCSS/Tailwind fame) are like a black hole. Any valid
+// class name is a valid space-separated value. Exclamation points are ruled
+// out here so we don't match `!important`, but not much else is.
+bool scan_for_apply_value(TSLexer *lexer) {
+  while (iswspace(lexer->lookahead)) {
+    lexer->advance(lexer, true);
+  }
+  if (lexer->lookahead == ';' || lexer->lookahead == '!') {
+    return false;
+  }
+  while (!iswspace(lexer->lookahead) && lexer->lookahead != ';') {
+    if (lexer->eof(lexer)) {
+      return false;
+    }
+    if (lexer->lookahead == '!') {
+      return false;
+    }
+    lexer->advance(lexer, false);
+  }
+  lexer->mark_end(lexer);
+  lexer->result_symbol = APPLY_VALUE;
+  return true;
+}
+
 bool tree_sitter_scss_external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid_symbols) {
   bool inErrorState = valid_symbols[ERROR_SENTINEL];
   if (!iswspace(lexer->lookahead) && valid_symbols[NO_WHITESPACE]) {
@@ -89,8 +114,11 @@ bool tree_sitter_scss_external_scanner_scan(void *payload, TSLexer *lexer, const
   }
 
   if (valid_symbols[DOUBLE_QUOTED_STRING_SEGMENT] && !inErrorState) {
-    // printf("&&& Scanning for string at col: %i\n", lexer->get_column(lexer));
     return scan_for_string_segment(lexer, '"', DOUBLE_QUOTED_STRING_SEGMENT);
+  }
+
+  if (valid_symbols[APPLY_VALUE] && !inErrorState) {
+    return scan_for_apply_value(lexer);
   }
 
   if (iswspace(lexer->lookahead) && valid_symbols[DESCENDANT_OP]) {
