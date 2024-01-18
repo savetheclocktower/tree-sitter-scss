@@ -338,7 +338,10 @@ module.exports = grammar({
       choice(
         alias($._block_direct_child_selector, $.child_selector),
         alias($._block_direct_sibling_selector, $.sibling_selector),
-        alias($._block_direct_adjacent_sibling_selector, $.adjacent_sibling_selector)
+        alias($._block_direct_adjacent_sibling_selector, $.adjacent_sibling_selector),
+        alias($._child_selector_block_direct, $.child_selector),
+        alias($._sibling_selector_block_direct, $.sibling_selector),
+        alias($._adjacent_sibling_selector_block_direct, $.adjacent_sibling_selector)
       ),
 
     _block_direct_child_selector: ($) =>
@@ -357,6 +360,24 @@ module.exports = grammar({
       seq(
         '~',
         field('right', $._selector)
+      ),
+
+    _child_selector_block_direct: ($) =>
+      seq(
+        field('left', $._selector),
+        '>'
+      ),
+
+    _sibling_selector_block_direct: ($) =>
+      seq(
+        field('left', $._selector),
+        '+'
+      ),
+
+    _adjacent_sibling_selector_block_direct: ($) =>
+      seq(
+        field('left', $._selector),
+        '~'
       ),
 
     // Selectors

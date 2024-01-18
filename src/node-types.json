@@ -71,7 +71,7 @@
       },
       "right": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "adjacent_sibling_selector",
@@ -1015,7 +1015,7 @@
       },
       "right": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "adjacent_sibling_selector",
@@ -3702,7 +3702,7 @@
       },
       "right": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "adjacent_sibling_selector",
