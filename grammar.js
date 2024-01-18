@@ -352,13 +352,13 @@ module.exports = grammar({
 
     _block_direct_sibling_selector: ($) =>
       seq(
-        '+',
+        '~',
         field('right', $._selector)
       ),
 
     _block_direct_adjacent_sibling_selector: ($) =>
       seq(
-        '~',
+        '+',
         field('right', $._selector)
       ),
 
@@ -371,13 +371,13 @@ module.exports = grammar({
     _sibling_selector_block_direct: ($) =>
       seq(
         field('left', $._selector),
-        '+'
+        '~'
       ),
 
     _adjacent_sibling_selector_block_direct: ($) =>
       seq(
         field('left', $._selector),
-        '~'
+        '+'
       ),
 
     // Selectors
