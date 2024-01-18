@@ -298,6 +298,9 @@ a {
   & > d {}
   &e {}
   &.#{"foo"} {}
+  > f {}
+  + g {}
+  ~ h {}
 }
 
 ---
@@ -307,10 +310,13 @@ a {
     (selectors (tag_name))
     (block
       (rule_set (selectors (class_selector (nesting_selector) (class_name))) (block))
-      (rule_set (selectors (descendant_selector (nesting_selector) (tag_name))) (block))
-      (rule_set (selectors (child_selector (nesting_selector) (tag_name))) (block))
+      (rule_set (selectors (descendant_selector left: (nesting_selector) right: (tag_name))) (block))
+      (rule_set (selectors (child_selector left: (nesting_selector) right: (tag_name))) (block))
       (rule_set (selectors (class_selector (nesting_selector) (class_name))) (block))
       (rule_set (selectors (class_selector (nesting_selector) (class_name (interpolation (string_value))))) (block))
+      (rule_set (selectors (child_selector right: (tag_name))) (block))
+      (rule_set (selectors (sibling_selector right: (tag_name))) (block))
+      (rule_set (selectors (adjacent_sibling_selector right: (tag_name))) (block))
 )))
 
 ===========================

@@ -288,7 +288,13 @@ module.exports = grammar({
 
     rule_set: ($) => seq($.selectors, $.block),
 
-    selectors: ($) => sep1(",", choice($._selector)),
+    selectors: ($) => sep1(
+      ",",
+      choice(
+        $._selector,
+        $._block_direct_selector
+      )
+    ),
 
     block: ($) =>
       seq(
@@ -326,6 +332,31 @@ module.exports = grammar({
         $.debug_statement,
         $.at_rule,
         alias($.content_at_rule, $.at_rule)
+      ),
+
+    _block_direct_selector: ($) =>
+      choice(
+        alias($._block_direct_child_selector, $.child_selector),
+        alias($._block_direct_sibling_selector, $.sibling_selector),
+        alias($._block_direct_adjacent_sibling_selector, $.adjacent_sibling_selector)
+      ),
+
+    _block_direct_child_selector: ($) =>
+      seq(
+        '>',
+        field('right', $._selector)
+      ),
+
+    _block_direct_sibling_selector: ($) =>
+      seq(
+        '+',
+        field('right', $._selector)
+      ),
+
+    _block_direct_adjacent_sibling_selector: ($) =>
+      seq(
+        '~',
+        field('right', $._selector)
       ),
 
     // Selectors
@@ -435,20 +466,34 @@ module.exports = grammar({
 
     child_selector: ($) => prec.left(
       seq(
-        $._selector, ">", $._selector
+        field('left', $._selector),
+        ">",
+        field('right', $._selector)
       )
     ),
 
     descendant_selector: ($) => prec.left(
-      seq($._selector, $._descendant_operator, $._selector)
+      seq(
+        field('left', $._selector),
+        $._descendant_operator,
+        field('right', $._selector)
+      )
     ),
 
     sibling_selector: ($) => prec.left(
-      seq($._selector, "~", $._selector)
+      seq(
+        field('left', $._selector),
+        "~",
+        field('right', $._selector)
+      )
     ),
 
     adjacent_sibling_selector: ($) => prec.left(
-      seq($._selector, "+", $._selector)
+      seq(
+        field('left', $._selector),
+        "+",
+        field('right', $._selector)
+      )
     ),
 
     namespace_selector: ($) => prec.left(

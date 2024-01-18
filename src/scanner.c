@@ -104,7 +104,6 @@ bool scan_for_apply_value(TSLexer *lexer) {
 bool tree_sitter_scss_external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid_symbols) {
   if (valid_symbols[ERROR_SENTINEL]) return false;
 
-  // bool inErrorState = valid_symbols[ERROR_SENTINEL];
   if (!iswspace(lexer->lookahead) && valid_symbols[NO_WHITESPACE]) {
     lexer->result_symbol = NO_WHITESPACE;
     lexer->mark_end(lexer);
