@@ -456,7 +456,7 @@ For statements
 
 (stylesheet
   (for_statement
-    (variable)
+    (variable_name)
     (from (integer_value))
     (through (integer_value))
     (block
@@ -493,6 +493,7 @@ While statements
 Functions
 =================================
 
+@function foo() {}
 @function pow($base, $exponent) {
   $result: 1;
   @for $_ from 1 through $exponent {
@@ -511,13 +512,18 @@ Functions
 (stylesheet
   (function_statement
     (name)
+    (parameters)
+    (block)
+  )
+  (function_statement
+    (name)
     (parameters
       (parameter (variable_name))
       (parameter (variable_name)))
     (block
       (declaration (variable_name) (integer_value))
       (for_statement
-        (variable)
+        (variable_name)
         (from (integer_value))
         (through (variable_value))
         (block
@@ -532,6 +538,121 @@ Functions
           (binary_expression
             (call_expression (function_name) (arguments (integer_value) (integer_value)))
             (integer_value (unit)))))))
+
+=================================
+Functions (parameter spread)
+=================================
+
+@function sum($numbers...) {
+  $sum: 0;
+  @each $number in $numbers {
+    $sum: $sum + $number;
+  }
+  @return $sum;
+}
+
+@function x($y, $z...) {}
+
+.micro {
+  width: sum(50px, 30px, 100px);
+}
+---
+
+(stylesheet
+  (function_statement
+    (name)
+    (parameters
+      (rest_parameter (variable_name)))
+    (block
+      (declaration (variable_name) (integer_value))
+      (each_statement
+        (value)
+        (variable_value)
+        (block
+          (declaration
+            (variable_name)
+            (binary_expression (variable_value) (variable_value))
+          )
+        )
+      )
+      (return_statement (variable_value))
+    )
+  )
+  (function_statement
+    (name)
+    (parameters
+      (parameter (variable_name))
+      (rest_parameter (variable_name))
+    )
+    (block)
+  )
+  (rule_set
+    (selectors (class_selector (class_name)))
+    (block
+      (declaration
+        (property_name)
+        (call_expression
+          (function_name)
+          (arguments
+            (integer_value (unit))
+            (integer_value (unit))
+            (integer_value (unit))
+          )
+        )
+      )
+    )
+  )
+)
+
+=================================
+Argument spread
+=================================
+
+$widths: 50px, 30px, 100px;
+.micro {
+  width: min($widths...);
+  max-width: max(200px, $widths...);
+}
+
+---
+
+(stylesheet
+  (declaration
+    (variable_name)
+    (integer_value (unit))
+    (integer_value (unit))
+    (integer_value (unit))
+  )
+  (rule_set
+    (selectors
+      (class_selector (class_name))
+    )
+    (block
+      (declaration
+        (property_name)
+        (call_expression
+          (function_name
+          )
+          (arguments
+            (rest_argument (variable_value))
+          )
+        )
+      )
+      (declaration
+        (property_name)
+        (call_expression
+          (function_name
+          )
+          (arguments
+            (integer_value (unit))
+            (rest_argument (variable_value))
+          )
+        )
+      )
+    )
+  )
+)
+
 
 =================================
 Logging statements

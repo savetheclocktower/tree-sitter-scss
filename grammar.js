@@ -12,6 +12,36 @@ module.exports = grammar({
     $._single_quoted_string_segment,
     $._double_quoted_string_segment,
     $._apply_value,
+
+    // Ordinary variable identifier that enforces _lack_ of `...` afterward.
+    $._variable_identifier,
+
+    // Detecting “spread” syntax is tricky because the `...` comes _after_ the
+    // variable. (If you're designing a language with spread syntax, be kind
+    // and put the `...` _before_ the identifier.)
+    //
+    // Most of the trouble we get into with parsing spread arguments/parameters
+    // is that, when parsing `$foo...`, the parser will want to lex `$foo` as
+    // an ordinary variable. This is hard to coax the parser away from, given
+    // all the other constraints and possibilities it has to consider.
+    //
+    // One way to cut through this would be to make spread syntax “valid” in
+    // more places, even though it can only be used as the last parameter or
+    // argument to a function. This would make some incorrect constructs
+    // parseable even though they're not valid SCSS.
+    //
+    // Instead, we've solved this by boiling the ocean: we turned variable
+    // identifiers into external scanner symbols. The `_variable_identifier`
+    // symbol is the standard one and _will not_ match the `$foo` in `$foo...`
+    // because it looks ahead to the `...`. This lets us more easily describe
+    // the two contexts in which `$foo...` can validly appear.
+    //
+    // Right now, a rest parameter followed by other parameters correctly fails
+    // to parse. A rest argument followed by other parameters will put an ERROR
+    // node into the tree, but the parser recovers quickly, and it may not be
+    // obvious to the user that the usage is wrong unless you target it in
+    // `highlights.scm` and mark it as such.
+    $._variable_identifier_with_following_rest,
     $._error_sentinel
   ],
 
@@ -19,7 +49,7 @@ module.exports = grammar({
     [$.attribute_selector, $._identifier_with_interpolation],
     [$.parenthesized_value, $.map_value],
     [$._selector, $._identifier_with_interpolation],
-    [$._selector, $._value],
+    [$._selector, $._value]
   ],
 
   inline: ($) => [$._top_level_item, $._block_item],
@@ -170,11 +200,33 @@ module.exports = grammar({
         ";"
       ),
 
-    parameters: ($) => seq("(", sep1(",", $.parameter), ")"),
+    parameters: ($) => seq(
+      "(",
+      choice(
+        // Only regular parameters, or…
+        sep(",", $.parameter),
+        // …one or more parameters followed by a rest parameter, or…
+        seq(
+          sep1(",", $.parameter),
+          ",",
+          $.rest_parameter
+        ),
+        // …a lone rest parameter.
+        $.rest_parameter
+      ),
+      ")"
+    ),
+
+    rest_parameter: ($) => seq(
+      alias($._variable_identifier_with_following_rest, $.variable_name),
+      $._spread
+    ),
+
+    _spread: (_) => alias(token.immediate('...'), "..."),
 
     parameter: ($) =>
       seq(
-        alias($.variable_identifier, $.variable_name),
+        alias($._variable_identifier, $.variable_name),
         optional(seq(":", alias($._value, $.default_value)))
       ),
 
@@ -184,7 +236,7 @@ module.exports = grammar({
     // parameter, but it must specify a value after a colon.
     use_parameter: ($) => (
       seq(
-        alias($.variable_identifier, $.variable_name),
+        alias($._variable_identifier, $.variable_name),
         ':',
         $._value
       )
@@ -210,7 +262,7 @@ module.exports = grammar({
 
     include_argument: ($) =>
       seq(
-        optional(seq(alias($.variable_identifier, $.argument_name), ":")),
+        optional(seq(alias($._variable_identifier, $.argument_name), ":")),
         alias($._value, $.argument_value)
       ),
 
@@ -246,8 +298,8 @@ module.exports = grammar({
     each_statement: ($) =>
       seq(
         "@each",
-        optional(seq(alias($.variable_identifier, $.key), ",")),
-        alias($.variable_identifier, $.value),
+        optional(seq(alias($._variable_identifier, $.key), ",")),
+        alias($._variable_identifier, $.value),
         "in",
         $._value,
         $.block
@@ -256,7 +308,7 @@ module.exports = grammar({
     for_statement: ($) =>
       seq(
         "@for",
-        alias($.variable_identifier, $.variable),
+        alias($._variable_identifier, $.variable_name),
         "from",
         alias($._value, $.from),
         "through",
@@ -267,7 +319,12 @@ module.exports = grammar({
     while_statement: ($) => seq("@while", $._value, $.block),
 
     function_statement: ($) =>
-      seq("@function", alias($._identifier, $.name), optional($.parameters), $.block),
+      seq(
+        "@function",
+        alias($._identifier, $.name),
+        optional($.parameters),
+        $.block
+      ),
 
     return_statement: ($) => seq("@return", $._value, ";"),
 
@@ -546,7 +603,7 @@ module.exports = grammar({
       choice(
         // Variable
         seq(
-          alias($.variable_identifier, $.variable_name),
+          alias($._variable_identifier, $.variable_name),
           ':',
           optional($.scope_annotation),
           $._value,
@@ -640,7 +697,7 @@ module.exports = grammar({
         choice(
           alias($._identifier_with_interpolation, $.plain_value),
           $.variable_module,
-          alias($.variable_identifier, $.variable_value),
+          alias($._variable_identifier, $.variable_value),
           $.boolean_value,
           $.null_value,
           alias($._plain_value, $.plain_value),
@@ -664,7 +721,7 @@ module.exports = grammar({
     _value_allowed_in_url_function: ($) =>
       choice(
         alias($._identifier, $.plain_value),
-        alias($.variable_identifier, $.variable_value),
+        alias($._variable_identifier, $.variable_value),
         $.boolean_value,
         $.null_value,
         alias($.unquoted_string_value, $.plain_value),
@@ -835,11 +892,31 @@ module.exports = grammar({
     arguments: ($) =>
       seq(
         token.immediate("("),
-        sep(
-          choice(",", ";"),
-          repeat1($._value)
+        choice(
+          // Only regular values, or…
+          sep(
+            choice(",", ";"),
+            repeat($._value)
+          ),
+          // one or more arguments followed by a rest argument, or…
+          seq(
+            sep1(
+              choice(",", ";"),
+              repeat($._value)
+            ),
+            ",",
+            $.rest_argument
+          ),
+          // …a lone rest argument.
+          $.rest_argument
         ),
         ")"
+      ),
+
+    rest_argument: ($) =>
+      seq(
+        alias($._variable_identifier_with_following_rest, $.variable_value),
+        $._spread
       ),
 
     arguments_for_url: ($) => (
@@ -860,11 +937,9 @@ module.exports = grammar({
         field('module', alias($._identifier, $.module)),
         token.immediate('.'),
         $._no_whitespace,
-        field('value', alias($.variable_identifier, $.variable_value))
+        field('value', alias($._variable_identifier, $.variable_value))
       )
     ),
-
-    variable_identifier: (_) => /\$[a-zA-Z-_][a-zA-Z0-9-_]*/,
 
     at_keyword: (_) => /@[a-zA-Z-_]+/,
 
