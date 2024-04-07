@@ -439,6 +439,58 @@ If statements
             (declaration (property_name) (binary_expression (variable_value) (integer_value)))))))))
 
 =================================
+If statements (with function call)
+=================================
+$foo: true;
+@debug meta.variable-exists("foo");
+@mixin avatar($size, $circle: false) {
+  width: $size;
+  height: $size;
+
+  @if meta.variable-exists("foo") {
+    border-radius: $size / 2;
+  }
+}
+
+---
+
+(stylesheet
+  (declaration
+    (variable_name)
+    (boolean_value)
+  )
+  (debug_statement
+    (call_expression
+      (module)
+      (function_name)
+      (arguments
+        (string_value)
+      )
+    )
+  )
+  (mixin_statement
+    (name)
+    (parameters
+      (parameter (variable_name))
+      (parameter (variable_name) (default_value (boolean_value))))
+    (block
+      (declaration (property_name) (variable_value))
+      (declaration (property_name) (variable_value))
+      (if_statement
+        (if_clause
+          (condition
+            (call_expression
+              (module)
+              (function_name)
+              (arguments
+                (string_value)
+              )
+            )
+          )
+          (block
+            (declaration (property_name) (binary_expression (variable_value) (integer_value)))))))))
+
+=================================
 Else statements
 =================================
 
