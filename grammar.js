@@ -632,18 +632,20 @@ module.exports = grammar({
 
     // Declarations
 
-    scope_annotation: (_) => choice("local", "global"),
-
     declaration: ($) =>
       choice(
         // Variable
         seq(
           alias($._variable_identifier, $.variable_name),
           ':',
-          optional($.scope_annotation),
           $._value,
           repeat(seq(optional(","), $._value)),
-          optional($.default),
+          optional(
+            choice(
+              $.default,
+              $.global
+            )
+          ),
           ';'
         ),
 
@@ -657,7 +659,7 @@ module.exports = grammar({
           ),
           optional($.important),
           ';'
-        )
+        ),
       ),
 
     // Only seems to be used to declare properties and not variables.
@@ -675,6 +677,7 @@ module.exports = grammar({
 
     important: (_) => "!important",
     default: (_) => "!default",
+    global: (_) => "!global",
 
     // Media queries
 

@@ -1370,6 +1370,10 @@
           "named": true
         },
         {
+          "type": "global",
+          "named": true
+        },
+        {
           "type": "grid_value",
           "named": true
         },
@@ -1403,10 +1407,6 @@
         },
         {
           "type": "property_name",
-          "named": true
-        },
-        {
-          "type": "scope_annotation",
           "named": true
         },
         {
@@ -3562,11 +3562,6 @@
     }
   },
   {
-    "type": "scope_annotation",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "selector_query",
     "named": true,
     "fields": {},
@@ -4770,7 +4765,7 @@
   },
   {
     "type": "global",
-    "named": false
+    "named": true
   },
   {
     "type": "hide",
@@ -4795,10 +4790,6 @@
   {
     "type": "key",
     "named": true
-  },
-  {
-    "type": "local",
-    "named": false
   },
   {
     "type": "mixin_name",

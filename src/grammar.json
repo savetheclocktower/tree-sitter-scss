@@ -2627,19 +2627,6 @@
         }
       ]
     },
-    "scope_annotation": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "local"
-        },
-        {
-          "type": "STRING",
-          "value": "global"
-        }
-      ]
-    },
     "declaration": {
       "type": "CHOICE",
       "members": [
@@ -2658,18 +2645,6 @@
             {
               "type": "STRING",
               "value": ":"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "scope_annotation"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
             },
             {
               "type": "SYMBOL",
@@ -2703,8 +2678,17 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "default"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "default"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "global"
+                    }
+                  ]
                 },
                 {
                   "type": "BLANK"
@@ -2850,6 +2834,10 @@
     "default": {
       "type": "STRING",
       "value": "!default"
+    },
+    "global": {
+      "type": "STRING",
+      "value": "!global"
     },
     "_query": {
       "type": "CHOICE",

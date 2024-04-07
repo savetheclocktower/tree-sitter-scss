@@ -261,13 +261,13 @@ Variables
 =================================
 
 $font-stack: Helvetica, sans-serif;
-$primary-color: global red;
+$primary-color: red;
 $should-debug: true;
 $should-log: false;
 $empty: null;
 
 a {
-  $primary-color: local red;
+  $primary-color: red !global;
 
   color: $primary-color;
   font: 100% $font-stack;
@@ -278,14 +278,14 @@ a {
 
 (stylesheet
   (declaration (variable_name) (plain_value) (plain_value))
-  (declaration (variable_name) (scope_annotation) (plain_value))
+  (declaration (variable_name) (plain_value))
   (declaration (variable_name) (boolean_value))
   (declaration (variable_name) (boolean_value))
   (declaration (variable_name) (null_value))
   (rule_set
     (selectors (tag_name))
     (block
-      (declaration (variable_name) (scope_annotation) (plain_value))
+      (declaration (variable_name) (plain_value) (global))
       (declaration (property_name) (variable_value))
       (declaration (property_name) (integer_value (unit)) (variable_value))
       (declaration (property_name) (variable_module (module) (variable_value)))
