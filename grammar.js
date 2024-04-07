@@ -22,8 +22,9 @@ module.exports = grammar({
     //
     // Most of the trouble we get into with parsing spread arguments/parameters
     // is that, when parsing `$foo...`, the parser will want to lex `$foo` as
-    // an ordinary variable. This is hard to coax the parser away from, given
-    // all the other constraints and possibilities it has to consider.
+    // an ordinary variable. Theoretically, it should get back on track when it
+    // sees the following `...`, but in practice I've not found it easy to
+    // ensure that happens.
     //
     // One way to cut through this would be to make spread syntax “valid” in
     // more places, even though it can only be used as the last parameter or
@@ -36,11 +37,16 @@ module.exports = grammar({
     // because it looks ahead to the `...`. This lets us more easily describe
     // the two contexts in which `$foo...` can validly appear.
     //
-    // Right now, a rest parameter followed by other parameters correctly fails
-    // to parse. A rest argument followed by other parameters will put an ERROR
-    // node into the tree, but the parser recovers quickly, and it may not be
-    // obvious to the user that the usage is wrong unless you target it in
-    // `highlights.scm` and mark it as such.
+    // This is a hack! We could probably pull this off without resorting to the
+    // external scanner. But it's the quickest way to support spread syntax
+    // without introducing yet another ambiguity that the parser has to
+    // reconcile.
+    //
+    // Right now, a rest parameter or argument followed by other parameters or
+    // arguments correctly fails to parse; you'll see an ERROR node in the
+    // tree. But the parser recovers quickly, and it may not be obvious to the
+    // user that the usage is wrong unless you target it in `highlights.scm`
+    // and mark it as such.
     $._variable_identifier_with_following_rest,
     $._error_sentinel
   ],
