@@ -745,6 +745,7 @@ module.exports = grammar({
           $.string_value,
           $.grid_value,
           $.binary_expression,
+          $.unary_expression,
           $.map_value,
           $.parenthesized_value,
           $.call_expression,
@@ -767,7 +768,14 @@ module.exports = grammar({
         $.integer_value,
         $.float_value,
         $.string_value,
-        alias($.binary_expression_allowed_in_url_function, $.binary_expression),
+        alias(
+          $.binary_expression_allowed_in_url_function,
+          $.binary_expression
+        ),
+        alias(
+          $.unary_expression_allowed_in_url_function,
+          $.unary_expression
+        ),
         $.map_value,
         $.parenthesized_value,
         $.call_expression
@@ -905,25 +913,60 @@ module.exports = grammar({
       )
     ),
 
+    // NOTE: Technically, `/` should only be allowed in binary
+    // expressions if we're inside a `calc`. They're not a part of Dart
+    // Sass, but even tree-sitter-css still treats them as binary
+    // operators in places where they aren't (e.g., grid value syntax),
+    // so we'll leave this the way it is for now.
+    _binary_operator: (_) =>
+      prec(
+        3,
+        // TODO: Operator precedence will be painful if it ever has to be
+        // implemented:
+        // https://sass-lang.com/documentation/operators/#order-of-operations
+        choice("+", "-", "*", "/", "==", "<", ">", "!=", "<=", ">=", "and", "or")
+      ),
+
+    _unary_operator: (_) =>
+      prec(
+        2,
+       choice("not", "+", "-", "/")
+      ),
+
     binary_expression: ($) =>
       prec.left(
+        2,
         seq(
-          $._value,
-          // NOTE: Technically, `/` should only be allowed in binary
-          // expressions if we're inside a `calc`. They're not a part of Dart
-          // Sass, but even tree-sitter-css still treats them as binary
-          // operators in places where they aren't (e.g., grid value syntax),
-          // so we'll leave this the way it is for now.
-          choice("+", "-", "*", "/", "==", "<", ">", "!=", "<=", ">="),
+          field('left', $._value),
+          field('operator', $._binary_operator),
+          field('right', $._value)
+        )
+      ),
+
+    unary_expression: ($) =>
+      prec.left(
+        2,
+        seq(
+          field('operator', $._unary_operator),
           $._value
         )
       ),
 
     binary_expression_allowed_in_url_function: ($) =>
       prec.left(
+        2,
         seq(
-          $._value_allowed_in_url_function,
-          choice("+", "-", "*", "/", "==", "<", ">", "!=", "<=", ">="),
+          field('left', $._value_allowed_in_url_function),
+          field('operator', $._binary_operator),
+          field('right', $._value_allowed_in_url_function)
+        )
+      ),
+
+    unary_expression_allowed_in_url_function: ($) =>
+      prec.left(
+        2,
+        seq(
+          field('operator', $._unary_operator),
           $._value_allowed_in_url_function
         )
       ),

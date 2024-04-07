@@ -150,6 +150,50 @@ a {
                   (parenthesized_value (binary_expression (integer_value) (integer_value))))))))))))
 
 ============================
+Binary and unary expressions
+============================
+
+@debug true and true;
+@debug 1 + 2;
+@debug 30px / 15px;
+@debug / 15px;
+@debug not false;
+
+---
+
+(stylesheet
+  (debug_statement
+    (binary_expression
+      (boolean_value)
+      (boolean_value)
+    )
+  )
+  (debug_statement
+    (binary_expression
+      (integer_value)
+      (integer_value)
+    )
+  )
+  (debug_statement
+    (binary_expression
+      (integer_value (unit))
+      (integer_value (unit))
+    )
+  )
+  (debug_statement
+    (unary_expression
+      (integer_value (unit))
+    )
+  )
+  (debug_statement
+    (unary_expression
+      (boolean_value)
+    )
+  )
+)
+
+
+============================
 Strings
 ============================
 
