@@ -106,9 +106,18 @@ module.exports = grammar({
 
     keyframes_statement: ($) => prec.right(1,
       seq(
-        choice("@keyframes", alias(/@[-a-z]+keyframes/, $.at_keyword)),
+        choice(
+          "@keyframes",
+          alias(/@[-a-z]+keyframes/, $.at_keyword)
+        ),
 
-        field('name', alias($._plain_value_with_interpolation, $.keyframes_name)),
+        field(
+          'name',
+          alias(
+            $._plain_value_with_interpolation,
+            $.keyframes_name
+          )
+        ),
         optional($.keyframe_block_list)
       )
     ),
@@ -126,10 +135,10 @@ module.exports = grammar({
       ),
 
     keyframe_block: ($) =>
-    seq(
-      choice($.from, $.to, $.integer_value),
-      $.block
-    ),
+      seq(
+        choice($.from, $.to, $.integer_value),
+        $.block
+      ),
 
     from: (_) => "from",
     to: (_) => "to",
@@ -164,12 +173,8 @@ module.exports = grammar({
       seq(
         "@use",
         $._value,
-        optional(
-          seq('with', $.use_parameters)
-        ),
-        optional(
-          seq('as', $.use_alias)
-        ),
+        optional($.as_clause),
+        optional($.with_clause),
         ";"
       ),
 
@@ -181,23 +186,43 @@ module.exports = grammar({
         //
         // First character can be any word character, an underscore, or a
         // hyphen. All other characters can be any of the above _or_ a digit.
-        /[\w_-][\w\d_-]*/
+        /[\w_-][\w\d_-]*/,
+        /[\w_-][\w\d_-]*-\*/,
       ),
 
-    // TODO: Should `use_parameters` be aliased to `forward_parameters`?
-    // Inclined to say no because the semantics of `@forward` are identical to
-    // those of `@use`, so it feels like busywork for the consumer.
     forward_statement: ($) =>
       seq(
         "@forward",
         $._value,
-        optional(
-          seq('with', $.use_parameters)
-        ),
-        optional(
-          seq('as', $.use_alias)
-        ),
+        // Near as I can tell, this is the order you're allowed to put these
+        // clauses in.
+        optional($.as_clause),
+        optional($.visibility_clause),
+        // The `with` clause comes with a map and must be last.
+        optional($.with_clause),
         ";"
+      ),
+
+    as_clause: ($) =>
+      seq('as', $.use_alias),
+
+    with_clause: ($) => seq('with', $.with_parameters),
+
+    visibility_clause: ($) =>
+      seq(
+        // You can have _either_ `hide` _or_ `show`, but not both.
+        choice('hide', 'show'),
+        $.visibility_parameters
+      ),
+
+
+    visibility_parameters: ($) =>
+      sep1(
+        ",",
+        choice(
+          alias(/[a-zA-Z-_][a-zA-Z_0-9-]*/, $.identifier),
+          alias($._variable_identifier, $.variable_value)
+        )
       ),
 
     parameters: ($) => seq(
@@ -230,15 +255,18 @@ module.exports = grammar({
         optional(seq(":", alias($._value, $.default_value)))
       ),
 
-    use_parameters: ($) => seq("(", sep1(",", $.use_parameter), optional(","), ")"),
+    with_parameters: ($) => seq("(", sep1(",", $.with_parameter), optional(","), ")"),
 
     // A `@use` at-rule can take a configuration block. It's like an ordinary
     // parameter, but it must specify a value after a colon.
-    use_parameter: ($) => (
+    with_parameter: ($) => (
       seq(
         alias($._variable_identifier, $.variable_name),
         ':',
-        $._value
+        $._value,
+        optional(
+          $.default
+        )
       )
     ),
 
@@ -248,7 +276,14 @@ module.exports = grammar({
     include_statement: ($) =>
       seq(
         "@include",
-        alias($._identifier, $.identifier),
+        optional(
+          seq(
+            field('module', alias($._identifier, $.module)),
+            token.immediate('.'),
+            $._no_whitespace
+          )
+        ),
+        alias($._identifier, $.mixin_name),
         optional(alias($.include_arguments, $.arguments)),
         choice($.block, ";")
       ),
@@ -746,7 +781,8 @@ module.exports = grammar({
       seq(
         field('key', $._value),
         ':',
-        field('value', $._value)
+        field('value', $._value),
+        optional($.default)
       )
     ),
 

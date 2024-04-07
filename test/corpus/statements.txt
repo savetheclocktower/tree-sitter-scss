@@ -185,7 +185,7 @@ Use statements
 @use 'foo.css' as foo;
 @use 'bar.css' as *;
 @use "other" with ($a: configured);
-@use "other" with ($a: configured, $b: 5,) as bar;
+@use "other" as bar with ($a: configured, $b: 5,);
 
 .inverse {
   background-color: base.$primary-color;
@@ -196,18 +196,25 @@ Use statements
 
 (stylesheet
   (use_statement (string_value))
-  (use_statement (string_value) (use_alias))
-  (use_statement (string_value) (use_alias))
+  (use_statement (string_value) (as_clause (use_alias)))
+  (use_statement (string_value) (as_clause (use_alias)))
   (use_statement
     (string_value)
-    (use_parameters
-      (use_parameter (variable_name) (plain_value))))
+    (with_clause
+      (with_parameters
+        (with_parameter (variable_name) (plain_value)))
+      )
+  )
   (use_statement
     (string_value)
-    (use_parameters
-      (use_parameter (variable_name) (plain_value))
-      (use_parameter (variable_name) (integer_value)))
-    (use_alias))
+    (as_clause (use_alias))
+    (with_clause
+      (with_parameters
+        (with_parameter (variable_name) (plain_value))
+        (with_parameter (variable_name) (integer_value))
+      )
+    )
+  )
   (rule_set
     (selectors (class_selector (class_name)))
     (block
@@ -222,25 +229,97 @@ Forward statements
 @forward 'foo.css' as foo;
 @forward 'bar.css' as *;
 @forward "other" with ($a: configured);
-@forward "other" with ($a: configured, $b: 5,) as bar;
+@forward "other" as bar-* with ($a: configured, $b: 5,);
+@forward "other" hide foo;
+@forward "other" as foo hide bar;
+@forward "other" as * hide bar;
+@forward "other" hide bar with ($a: configured, $b: 5 !default);
+@forward "other" as bar-* hide foo with ($a: configured, $b: 5 !default);
 
 ---
 
 (stylesheet
   (forward_statement (string_value))
-  (forward_statement (string_value) (use_alias))
-  (forward_statement (string_value) (use_alias))
+  (forward_statement (string_value) (as_clause (use_alias)))
+  (forward_statement (string_value) (as_clause (use_alias)))
   (forward_statement
     (string_value)
-    (use_parameters
-      (use_parameter (variable_name) (plain_value))))
-  (forward_statement
-    (string_value)
-    (use_parameters
-      (use_parameter (variable_name) (plain_value))
-      (use_parameter (variable_name) (integer_value)))
-    (use_alias))
+    (with_clause
+      (with_parameters
+        (with_parameter (variable_name) (plain_value))
+      )
+    )
   )
+  (forward_statement
+    (string_value)
+    (as_clause (use_alias))
+    (with_clause
+      (with_parameters
+        (with_parameter (variable_name) (plain_value))
+        (with_parameter (variable_name) (integer_value))
+      )
+    )
+  )
+  (forward_statement
+    (string_value)
+    (visibility_clause
+      (visibility_parameters (identifier))
+    )
+  )
+  (forward_statement
+    (string_value)
+    (as_clause (use_alias))
+    (visibility_clause
+      (visibility_parameters (identifier))
+    )
+  )
+  (forward_statement
+    (string_value)
+    (as_clause (use_alias))
+    (visibility_clause
+      (visibility_parameters (identifier))
+    )
+  )
+  (forward_statement
+    (string_value)
+    (visibility_clause
+      (visibility_parameters (identifier))
+    )
+    (with_clause
+      (with_parameters
+        (with_parameter
+          (variable_name)
+          (plain_value)
+        )
+        (with_parameter
+          (variable_name)
+          (integer_value)
+          (default)
+        )
+      )
+    )
+  )
+  (forward_statement
+    (string_value)
+    (as_clause (use_alias))
+    (visibility_clause
+      (visibility_parameters (identifier))
+    )
+    (with_clause
+      (with_parameters
+        (with_parameter
+          (variable_name)
+          (plain_value)
+        )
+        (with_parameter
+          (variable_name)
+          (integer_value)
+          (default)
+        )
+      )
+    )
+  )
+)
 
 ==============================
 Include statements
@@ -257,8 +336,8 @@ Include statements
   (rule_set
     (selectors (class_selector (class_name)))
     (block
-      (include_statement (identifier))
-      (include_statement (identifier)
+      (include_statement (mixin_name))
+      (include_statement (mixin_name)
         (arguments
           (argument (argument_value (integer_value (unit))))
           (argument (argument_name) (argument_value (plain_value))))))))
