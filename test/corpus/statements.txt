@@ -328,6 +328,7 @@ Include statements
 .foo {
   @include bar;
   @include transform(50px, $float: left);
+  @include x(1, 2, 4px );
 }
 
 ---
@@ -340,7 +341,17 @@ Include statements
       (include_statement (mixin_name)
         (arguments
           (argument (argument_value (integer_value (unit))))
-          (argument (argument_name) (argument_value (plain_value))))))))
+          (argument (argument_name) (argument_value (plain_value)))))
+      (include_statement (mixin_name)
+        (arguments
+          (argument (argument_value (integer_value)))
+          (argument (argument_value (integer_value)))
+          (argument (argument_value (integer_value (unit))))
+        )
+      )
+    )
+  )
+)
 
 ==============================
 Extend statements

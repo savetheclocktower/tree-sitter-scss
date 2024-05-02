@@ -298,7 +298,7 @@ module.exports = grammar({
       seq(
         token.immediate("("),
         sep(",", alias($.include_argument, $.argument)),
-        token.immediate(")")
+        ")"
       ),
 
     include_argument: ($) =>
