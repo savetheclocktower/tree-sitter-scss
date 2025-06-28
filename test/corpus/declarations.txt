@@ -260,6 +260,31 @@ a {
       (declaration (property_name) (plain_value))
       (declaration (property_name) (plain_value)))))
 
+============================
+Declarations without space after colon
+============================
+
+a {
+  b:c;
+  d:e
+}
+
+b {
+  f: g;
+}
+---
+
+(stylesheet
+  (rule_set
+    (selectors (tag_name))
+    (block
+      (declaration (property_name) (plain_value))
+      (declaration (property_name) (plain_value))))
+  (rule_set
+    (selectors (tag_name))
+    (block
+      (declaration (property_name) (plain_value)))))
+
 =======================================
 Comments right after numbers
 =======================================

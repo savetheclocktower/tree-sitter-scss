@@ -22,6 +22,10 @@ typedef enum TokenType {
   ERROR_SENTINEL
 } TokenType;
 
+static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
+
+static inline void skip(TSLexer *lexer) { lexer->advance(lexer, true); }
+
 void *tree_sitter_scss_external_scanner_create() { return NULL; }
 void tree_sitter_scss_external_scanner_destroy(void *p) {}
 void tree_sitter_scss_external_scanner_reset(void *p) {}
@@ -235,15 +239,23 @@ bool tree_sitter_scss_external_scanner_scan(void *payload, TSLexer *lexer, const
 
   if (valid_symbols[PSEUDO_CLASS_SELECTOR_COLON]) {
     while (iswspace(lexer->lookahead)) {
-      lexer->advance(lexer, true);
+      skip(lexer);
     }
     if (lexer->lookahead == ':') {
-      lexer->advance(lexer, false);
+      advance(lexer);
       if (iswspace(lexer->lookahead) || lexer->lookahead == ':') {
         return false;
       }
-      lexer->result_symbol = PSEUDO_CLASS_SELECTOR_COLON;
-      return true;
+      lexer->mark_end(lexer);
+      // We need a `{` to be a pseudo class selector; `;` indicates a property.
+      while (lexer->lookahead != ';' && lexer->lookahead != '}' && !lexer->eof(lexer)) {
+        advance(lexer);
+        if (lexer->lookahead == '{') {
+          lexer->result_symbol = PSEUDO_CLASS_SELECTOR_COLON;
+          return true;
+        }
+      }
+      return false;
     }
   }
 
