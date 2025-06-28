@@ -7,14 +7,14 @@
     "parser",
     "lexer"
   ],
-  "author": "Serenade Labs, Inc.",
+  "author": "Andrew Dupont",
   "license": "MIT",
   "dependencies": {
     "nan": "^2.11.1",
     "sass": "^1.63.6"
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.20.8"
+    "tree-sitter-cli": "^0.25.6"
   },
   "scripts": {
     "build": "tree-sitter generate && node-gyp build",

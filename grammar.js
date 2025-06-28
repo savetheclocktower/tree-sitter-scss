@@ -52,10 +52,7 @@ module.exports = grammar({
   ],
 
   conflicts: ($) => [
-    [$.attribute_selector, $._identifier_with_interpolation],
-    [$.parenthesized_value, $.map_value],
     [$._selector, $._identifier_with_interpolation],
-    [$._selector, $._value]
   ],
 
   inline: ($) => [$._top_level_item, $._block_item],

@@ -32,7 +32,7 @@ void tree_sitter_scss_external_scanner_reset(void *p) {}
 unsigned tree_sitter_scss_external_scanner_serialize(void *p, char *buffer) { return 0; }
 void tree_sitter_scss_external_scanner_deserialize(void *p, const char *b, unsigned n) {}
 
-bool scan_for_string_segment(TSLexer *lexer, char delimiter, TokenType stringTokenType) {
+static bool scan_for_string_segment(TSLexer *lexer, char delimiter, TokenType stringTokenType) {
   char c = lexer->lookahead;
   bool escaped = false;
   int initialColumn = lexer->get_column(lexer);
@@ -94,7 +94,7 @@ bool scan_for_string_segment(TSLexer *lexer, char delimiter, TokenType stringTok
 // @apply values (of PostCSS/Tailwind fame) are like a black hole. Any valid
 // class name is a valid space-separated value. Exclamation points are ruled
 // out here so we don't match `!important`, but not much else is.
-bool scan_for_apply_value(TSLexer *lexer) {
+static bool scan_for_apply_value(TSLexer *lexer) {
   while (iswspace(lexer->lookahead)) {
     lexer->advance(lexer, true);
   }
@@ -115,7 +115,7 @@ bool scan_for_apply_value(TSLexer *lexer) {
   return true;
 }
 
-bool scan_for_variable(TSLexer *lexer, const bool *valid_symbols) {
+static bool scan_for_variable(TSLexer *lexer, const bool *valid_symbols) {
   if (lexer->lookahead != '$') return false;
   PRINTF(
     "Starting var scan at: %i valid: with? %i without? %i\n",
@@ -247,6 +247,7 @@ bool tree_sitter_scss_external_scanner_scan(void *payload, TSLexer *lexer, const
         return false;
       }
       lexer->mark_end(lexer);
+      // If we reach a `{` first, we're in a selector. If we reach a `;` first
       // We need a `{` to be a pseudo class selector; `;` indicates a property.
       while (lexer->lookahead != ';' && lexer->lookahead != '}' && !lexer->eof(lexer)) {
         advance(lexer);

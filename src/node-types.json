@@ -4072,6 +4072,7 @@
   {
     "type": "stylesheet",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -5072,7 +5073,8 @@
   },
   {
     "type": "comment",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "default",
@@ -5172,7 +5174,8 @@
   },
   {
     "type": "single_line_comment",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "through",

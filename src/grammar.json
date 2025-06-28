@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "scss",
   "rules": {
     "stylesheet": {
@@ -4358,20 +4359,8 @@
   ],
   "conflicts": [
     [
-      "attribute_selector",
-      "_identifier_with_interpolation"
-    ],
-    [
-      "parenthesized_value",
-      "map_value"
-    ],
-    [
       "_selector",
       "_identifier_with_interpolation"
-    ],
-    [
-      "_selector",
-      "_value"
     ]
   ],
   "precedences": [],
@@ -4417,6 +4406,6 @@
     "_top_level_item",
     "_block_item"
   ],
-  "supertypes": []
+  "supertypes": [],
+  "reserved": {}
 }
-
